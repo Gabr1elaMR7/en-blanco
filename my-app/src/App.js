@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import DiagramComponent from "./DiagramComponent";
 import { Viscomponent } from "./Viscomponent";
@@ -6,7 +6,7 @@ import TableComponent from "./TableComponent";
 import EditComponent from "./EditComponent";
 import CrearComponent from "./CrearComponent";
 import Login from "./Login";
-import { Route, Routes, Link, useLocation } from "react-router-dom";
+import { useNavigate,Route, Routes, Link, useLocation } from "react-router-dom";
 import styles from "./Estilos/App.module.css";
 import "./Estilos/estilosGlobales.css";
 
@@ -15,15 +15,28 @@ const App = () => {
   const [consultaGuardada, setConsultaGuardada] = useState("");
   const [tec, setTecnologia] = useState("FTTH");
   const [sugerencias, setSugerencias] = useState([]);
+  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
+
 
   const location = useLocation(); // Para obtener la ruta actual
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+    navigate("/"); // Redirigir a la página inicial después de iniciar sesión
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false); // Cambiar el estado de autenticación
+    navigate("/login"); // Redirigir al login
+  };
 
   const handleInputChange = async (event) => {
     const value = event.target.value;
     setConsulta(value); // Actualiza el estado con el input del usuario
 
     // Realiza la búsqueda en la base de datos solo si hay más de un carácter
-    if (value.length >1) {
+    if (value.length > 1) {
       try {
         const response = await axios.get(
           `http://172.31.33.33:5000/topologias?query=${value}`
@@ -52,10 +65,11 @@ const App = () => {
     // Aquí puedes realizar la búsqueda en la base de datos, si es necesario
   };
 
+
+
+
   return (
-    
     <div className="App">
-    
       <div className="mainContainer">
         <div className="banderaContainer">
           <img
@@ -74,7 +88,7 @@ const App = () => {
 
             <ul className="dropdown-menu">
               <li>
-                <a className="dropdown-item" href="#">
+                <a className="dropdown-item" href="#" onClick={handleLogout}>
                   Salir ↩ <i className="bi bi-escape"></i>
                 </a>
               </li>
@@ -111,9 +125,6 @@ const App = () => {
           <Link to="/edit" className="cuadroBotones">
             Editar
           </Link>
-          <Link to="/login" className="cuadroBotones">
-            Loguear
-          </Link>
         </div>
       </div>
 
@@ -124,7 +135,8 @@ const App = () => {
           alt="Claro Logo"
         />
       </header>
-
+      {isAuthenticated ? ( // Renderizar el contenido si está autenticado
+        <>
       {location.pathname !== "/edit" &&
         location.pathname !== "/crear" &&
         location.pathname !== "/login" && (
@@ -270,10 +282,16 @@ const App = () => {
         )}
 
       <Routes>
+        <Route path="/login" element={<Login />} />
         <Route path="/edit" element={<EditComponent />} />
         <Route path="/crear" element={<CrearComponent />} />
-        <Route path="/login" element={<Login />} />
       </Routes>
+
+      </>
+      ) : (
+        // Si no está autenticado, mostrar el componente de login
+        <Login onLogin={handleLogin} />
+      )}
     </div>
   );
 };

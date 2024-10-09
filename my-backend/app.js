@@ -114,12 +114,10 @@ app.post("/topologias", async (req, res) => {
     res.status(201).json({ message: "Topología creada con éxito!" });
   } catch (error) {
     console.error("Error al crear la topología:", error);
-    res
-      .status(500)
-      .json({
-        error:
-          "Error al crear la topología,Por favor, completa todos los campos requeridos",
-      });
+    res.status(500).json({
+      error:
+        "Error al crear la topología,Por favor, completa todos los campos requeridos",
+    });
   }
 });
 
@@ -217,17 +215,17 @@ app.delete("/topologias/:id", async (req, res) => {
 
 app.post("/usuarios", async (req, res) => {
   const { usser, Password } = req.body;
-  console.log("Datos recibidos:", req.body);
 
   try {
     let usuarioEncontrado = await Usuario.findOne({ usser });
-    console.log("Encontrado", usuarioEncontrado,Password);
+    console.log("Encontrado:", usuarioEncontrado);
 
     if (!usuarioEncontrado) {
       return res.status(404).json({ mensaje: "Usuario incorrecto" });
     }
 
     const esValida = await bcrypt.compare(Password, usuarioEncontrado.Password);
+    console.log("Contraseña válida:", esValida);
 
     if (!esValida) {
       return res.status(401).json({ mensaje: "Contraseña incorrectos" });

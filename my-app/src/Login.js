@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 import styles from "./Estilos/Login.module.css"; // Asegúrate de tener los estilos correctos en este archivo
 
 const Login = () => {
@@ -10,6 +11,8 @@ const Login = () => {
     formState: { errors },
   } = useForm();
   const [mensaje, setMensaje] = useState(""); // Para mostrar mensajes de éxito/error
+  const navigate = useNavigate();
+  
 
   const onSubmit = async (data) => {
     try {
@@ -18,7 +21,7 @@ const Login = () => {
         Password: data.Password,       
       });
       setMensaje("Usuario OK"); // Mostrar mensaje de éxito.
-
+      navigate("/");
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un código de estado que no está en el rango de 2xx
@@ -47,7 +50,7 @@ const Login = () => {
         <div className={styles.contenido}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <h2>Iniciar Sesión</h2>
-            <label htmlFor="usser">usser</label>
+            <label htmlFor="usser">Usuario</label>
             <input
               className={styles.inputForm}
               name="usser"

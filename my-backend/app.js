@@ -218,14 +218,13 @@ app.post("/usuarios", async (req, res) => {
 
   try {
     let usuarioEncontrado = await Usuario.findOne({ usser });
-    console.log("Encontrado:", usuarioEncontrado);
-
+    
     if (!usuarioEncontrado) {
       return res.status(404).json({ mensaje: "Usuario incorrecto" });
     }
 
     const esValida = await bcrypt.compare(Password, usuarioEncontrado.Password);
-    console.log("Contraseña válida:", esValida);
+   
 
     if (!esValida) {
       return res.status(401).json({ mensaje: "Contraseña incorrectos" });

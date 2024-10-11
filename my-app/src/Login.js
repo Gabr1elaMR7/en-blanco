@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import styles from "./Estilos/Login.module.css"; // Asegúrate de tener los estilos correctos en este archivo
 
-const Login = () => {
+const Login = ({ onLogin }) => { // Asegúrate de recibir onLogin como prop
   const {
     register,
     handleSubmit,
@@ -12,24 +12,29 @@ const Login = () => {
   } = useForm();
   const [mensaje, setMensaje] = useState(""); // Para mostrar mensajes de éxito/error
   const navigate = useNavigate();
-  
 
   const onSubmit = async (data) => {
     try {
-       await axios.post ("http://172.31.33.33:5000/usuarios", {
+      // Realiza la solicitud de inicio de sesión
+      const response = await axios.post("http://172.31.33.33:5000/usuarios", {
         usser: data.usser,
-        Password: data.Password,       
+        Password: data.Password,
       });
-      setMensaje("Usuario OK"); // Mostrar mensaje de éxito.
-      navigate("/");
+      
+      // Verifica que la respuesta sea exitosa
+      if (response.status === 200) {
+        const { rol } = response.data;
+        onLogin(rol); // Llama a onLogin para actualizar el estado en el componente padre
+        navigate("/"); // Redirige al usuario a la página principal
+        setMensaje("Usuario OK"); // Mostrar mensaje de éxito.
+      }
     } catch (error) {
       if (error.response) {
         // El servidor respondió con un código de estado que no está en el rango de 2xx
         if (error.response.status === 404) {
-          setMensaje("Usuario incorrecto"); // Usuario no encontrado
-         
+          setMensaje("Usuario o Contraseña incorrecto"); // Usuario no encontrado
         } else if (error.response.status === 401) {
-          setMensaje("Contraseña incorrectos"); // Contraseña no coincide
+          setMensaje("Usuario o Contraseña incorrecto"); // Contraseña no coincide
         } else {
           setMensaje("Error desconocido"); // Otros errores
         }
@@ -55,23 +60,21 @@ const Login = () => {
               className={styles.inputForm}
               name="usser"
               type="text"
-              {...register("usser", { required: "Este campo es requerido" })} // Registro del input
+              {...register("usser", { required: "Este campo es requerido" })}
             />
             {errors.usser && (
               <p className={styles.error}>{errors.usser.message}</p>
-            )}{" "}
-            {/* Mostrar error de usuario */}
+            )}
             <label htmlFor="Password">Contraseña</label>
             <input
               className={styles.inputForm}
               name="Password"
               type="password"
-              {...register("Password", { required: "Este campo es requerido" })} // Registro del input
+              {...register("Password", { required: "Este campo es requerido" })}
             />
             {errors.Password && (
               <p className={styles.error}>{errors.Password.message}</p>
-            )}{" "}
-            {/* Mostrar error de contraseña */}
+            )}
             <button type="submit" className={styles.botonLogin}>
               ENTRAR
             </button>
@@ -84,7 +87,5 @@ const Login = () => {
     </div>
   );
 };
-
-
 
 export default Login;

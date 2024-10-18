@@ -1,3 +1,5 @@
+//login.js
+
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -19,14 +21,16 @@ const Login = ({ onLogin }) => { // Asegúrate de recibir onLogin como prop
       const response = await axios.post("http://172.31.33.33:5000/usuarios", {
         usser: data.usser,
         Password: data.Password,
+        Rol: data.Rol,
       });
-      
       // Verifica que la respuesta sea exitosa
       if (response.status === 200) {
-        const { rol } = response.data;
-        onLogin(rol); // Llama a onLogin para actualizar el estado en el componente padre
+        const { Rol } = response.data;
+        onLogin(Rol); // Llama a onLogin para actualizar el estado en el componente padre
         navigate("/"); // Redirige al usuario a la página principal
-        setMensaje("Usuario OK"); // Mostrar mensaje de éxito.
+        setMensaje("Usuario OK");
+        console.log("un",Rol);
+         // Mostrar mensaje de éxito.
       }
     } catch (error) {
       if (error.response) {

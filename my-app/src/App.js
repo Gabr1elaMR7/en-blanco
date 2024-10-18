@@ -1,3 +1,5 @@
+//App.js front
+
 import React, { useState } from "react";
 import axios from "axios";
 import Login from "./Login";
@@ -6,7 +8,9 @@ import { Viscomponent } from "./Viscomponent";
 import TableComponent from "./TableComponent";
 import EditComponent from "./EditComponent";
 import CrearComponent from "./CrearComponent";
-import AdminComponent from "./gestion"
+import AdminComponent from "./AdminComponent";
+import ProtectedRoute from "./ProtectedRoute";
+
 import {
   useNavigate,
   Route,
@@ -23,18 +27,25 @@ const App = () => {
   const [tec, setTecnologia] = useState("FTTH");
   const [sugerencias, setSugerencias] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
+  const [userRole, setUserRole] = useState("");
 
   const location = useLocation(); // Para obtener la ruta actual
   const navigate = useNavigate();
 
-  const handleLogin = () => {
+  const handleLogin = (rol) => {
     setIsAuthenticated(true);
     navigate("/");
+    setUserRole(rol);
+    console.log("rol recibido",rol);
   };
 
   const handleLogout = () => {
     setIsAuthenticated(false); // Cambiar el estado de autenticación
     navigate("/login"); // Redirigir al login
+  };
+
+  const admin = () => {
+    navigate("/gestion");
   };
 
   const handleInputChange = async (event) => {
@@ -107,7 +118,7 @@ const App = () => {
                   </li>
 
                   <li>
-                    <a className="dropdown-item" href="#">
+                    <a className="dropdown-item" href="#" onClick={admin}>
                       Gestión{" "}
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -147,7 +158,8 @@ const App = () => {
 
           {location.pathname !== "/edit" &&
             location.pathname !== "/crear" &&
-            location.pathname !== "/login" && (
+            location.pathname !== "/login" &&
+            location.pathname !== "/gestion" && (
               <>
                 <main>
                   <div className={styles.todoContenedorInicio}>
@@ -235,15 +247,7 @@ const App = () => {
                               Sharepoint Certificación
                             </a>
                           </li>
-                          <li>
-                            <a
-                              href="https://claromovilco.sharepoint.com/sites/ProyectoPlaneacinyDiseoMINTIC/Documentos%20compartidos/Forms/AllItems.aspx?ga=1&amp;OR=Teams%2DHL&amp;CT=1677249475388&amp;clickparams=eyJBcHBOYW1lIjoiVGVhbXMtRGVza3RvcCIsIkFwcFZlcnNpb24iOiIyNy8yMzAxMDEwMDkxMyIsIkhhc0ZlZGVyYXRlZFVzZXIiOnRydWV9&amp;id=%2Fsites%2FProyectoPlaneacinyDiseoMINTIC%2FDocumentos%20compartidos%2FGeneral%2FENTREGA%5FOPERACION%2FOLTs%5F2021%2D2022%2D2023&amp;viewid=398360b1%2D7bec%2D4903%2D9f16%2D8f2499c1cc7e"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Sharepoint Implementación FTTH
-                            </a>
-                          </li>
+                         
                           <li>
                             <a
                               href="https://claromovilco.sharepoint.com/sites/JEFATURABACKOFFICEALAMBRICO/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FJEFATURABACKOFFICEALAMBRICO%2FDocumentos%20compartidos%2FBITACORA%2FFTTH%2F3%2E%20ATPs&amp;p=true&amp;ga=1"
@@ -254,15 +258,7 @@ const App = () => {
                             </a>
                           </li>
 
-                          <li>
-                            <a
-                              href="https://claromovilco-my.sharepoint.com/:x:/r/personal/38104043_claro_com_co/_layouts/15/Doc.aspx?sourcedoc=%7B46C8D849-8235-400B-9905-FEDBCD46882C%7D&amp;file=OLT%20llineales.xlsx&amp;wdLOR=c4235A2FB-1F77-4380-BC04-A16FE2E08C41&amp;fromShare=true&amp;action=default&amp;mobileredirect=true"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Sharepoint OLT´s Lineales
-                            </a>
-                          </li>
+                        
                           <li>
                             <a
                               href="http://172.31.33.21/index.php#"
@@ -303,7 +299,17 @@ const App = () => {
                 <Route path="/" element={<DiagramComponent />} />
                 <Route path="/crear" element={<CrearComponent />} />
                 <Route path="/edit" element={<EditComponent />} />
-                {/* Agrega más rutas si es necesario */}
+                <Route
+                  path="/gestion"
+                  element={
+                    <ProtectedRoute
+                      isAuthenticated={isAuthenticated}
+                      userRole={userRole}
+                    >
+                      <AdminComponent />
+                    </ProtectedRoute>
+                  }
+                />
               </>
             )}
           </Routes>

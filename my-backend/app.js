@@ -1,4 +1,4 @@
-// app.js
+// app.js backend
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -214,28 +214,95 @@ app.delete("/topologias/:id", async (req, res) => {
 //////////////////////////////////////////USUARIOS///////////////////////////////////////////////////////////
 
 app.post("/usuarios", async (req, res) => {
-  const { usser, Password } = req.body;
+  const { usser, Password, Rol } = req.body;
 
   try {
     let usuarioEncontrado = await Usuario.findOne({ usser });
-    
+   
+
     if (!usuarioEncontrado) {
       return res.status(404).json({ mensaje: "Usuario incorrecto" });
     }
 
     const esValida = await bcrypt.compare(Password, usuarioEncontrado.Password);
-   
 
     if (!esValida) {
       return res.status(401).json({ mensaje: "Contraseña incorrectos" });
     }
 
-    res.status(200).json({ mensaje: "Usuario OK" });
+    res.status(200).json({ mensaje: "Usuario OK",Rol: usuarioEncontrado.Rol });
+
   } catch (error) {
     console.error("Error en el login:", error);
     res.status(500).json({ mensaje: "Error en el servidor" });
   }
 });
+
+app.get("/usuarios", async (req, res) => {
+  try {
+    const usuarios = await Usuario.find({}, "NombreUsuario usser Rol"); // Solo devolver los campos necesarios
+    res.status(200).json(usuarios);
+  } catch (error) {
+    console.error("Error al obtener usuarios:", error);
+    res.status(500).json({ mensaje: "Error en el servidor" });
+  }
+});
+
+app.post("/usuarios/nuevo", async (req, res) => {
+  const { NombreUsuario, usser, Rol, Password } = req.body;
+
+  try {
+    // Encripta la contraseña antes de guardarla
+    const hashedPassword = await bcrypt.hash(Password, 10);
+
+    // Crea un nuevo usuario con todos los campos
+    const nuevoUsuario = new Usuario({
+      NombreUsuario,
+      usser,
+      Rol,
+      Password: hashedPassword, // Guardamos la contraseña encriptada
+    });
+
+    // Guarda el usuario en la base de datos
+    await nuevoUsuario.save();
+
+    res.status(201).json(nuevoUsuario); // Envía el nuevo usuario como respuesta
+  } catch (error) {
+    console.error("Error al crear usuario:", error);
+    res.status(500).json({ mensaje: "Error al crear usuario" });
+  }
+});
+
+app.delete("/usuarios/:id", async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const usuarioEliminado = await Usuario.findByIdAndDelete(id);
+    if (!usuarioEliminado) {
+      return res.status(404).json({ mensaje: "Usuario no encontrado" });
+    }
+    res.status(200).json({ mensaje: "Usuario eliminado correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar usuario:", error);
+    res.status(500).json({ mensaje: "Error al eliminar usuario" });
+  }
+});
+
+// Solicitud para obtener un archivo JSON de toda la colección `Topologias`
+app.get("/topologias  ", async (req, res) => {
+  try {
+    const nodes = await Topologia.find(); // Obtén todos los documentos de la colección
+
+    // Configura el encabezado para descargar como un archivo JSON
+    res.setHeader("Content-Disposition", "attachment; filename=topologias.json");
+    res.setHeader("Content-Type", "application/json");
+    res.status(200).json(nodes); // Envía el JSON como respuesta
+  } catch (error) {
+    console.error("Error al descargar los nodos:", error);
+    res.status(500).json({ error: "Error al descargar los nodos" });
+  }
+});
+
 
 app.listen(port, () => {
   console.log(`EL servicio se esta ejecutando sobre el puerto: ${port}`);

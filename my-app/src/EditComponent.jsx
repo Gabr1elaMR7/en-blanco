@@ -28,6 +28,7 @@ const EditComponent = () => {
       );
       console.log("Datos actualizados correctamente:", response.data);
       setTopologiaCreada(true); // Se establece en true al guardar correctamente
+      alert("La topología se creó exitosamente."); 
     } catch (error) {
       console.error("Error al guardar los datos:", error);
       setTopologiaCreada(false); // En caso de error, se asegura de no mostrar el mensaje de éxito

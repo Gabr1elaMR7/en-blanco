@@ -29,12 +29,12 @@ const TableComponent = ({ query, tecnologia }) => {
       <table className="table table-striped table-hover">
         <thead>
           <tr>
+          <th>Ip Equipo Destino</th>
             <th>Equipo Destino</th>
-            <th>TrunkDest</th>
-            <th>TrkROU</th>
-            <th>EquipoROU</th>
-            <th>IpEquipoDestino</th>
-            <th>IpEquipoROU</th>
+            <th>Puerto Salida</th>
+            <th>Puerto Llegada</th>
+            <th>Equipo ROU</th>
+            <th>IpEquipo ROU</th>
             <th>Tecnologia</th>
           </tr>
         </thead>

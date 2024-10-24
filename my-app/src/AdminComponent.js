@@ -5,6 +5,8 @@ import styles from "./Estilos/AdminGestion.module.css";
 const AdminComponent = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const [datos_cre_daas, setDatos_cre_daas] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false); // Para mostrar/ocultar formulario
   const [nuevoUsuario, setNuevoUsuario] = useState({
     NombreUsuario: "",
@@ -25,6 +27,18 @@ const AdminComponent = () => {
       }
     };
 
+    const obtenerdatos_cre_daas = async () => {
+      try {
+        const response = await axios.get(
+          "http://172.31.33.33:5000/datos_cre_daas"
+        );
+        setDatos_cre_daas(response.data); // Guardar las conexiones
+      } catch (error) {
+        console.error("Error al obtener conexiones RPHY:", error);
+      }
+    };
+
+    obtenerdatos_cre_daas();
     obtenerUsuarios();
   }, []);
 
@@ -35,6 +49,18 @@ const AdminComponent = () => {
 
   const handleAgregarUsuario = async (e) => {
     e.preventDefault();
+    if (nuevoUsuario.NombreUsuario.length < 8) {
+      alert("Debe ingresar un nombre de usuario.");
+      return; // Detener la ejecución si el nombre de usuario está vacío
+    }
+    if (nuevoUsuario.usser.length < 8) {
+      alert("El usuario debe tener al menos 8 caracteres.");
+      return; // Detener la ejecución si la contraseña es demasiado corta
+    }
+    if (nuevoUsuario.Password.length < 8) {
+      alert("La contraseña debe tener al menos 8 caracteres.");
+      return; // Detener la ejecución si la contraseña es demasiado corta
+    }
     if (nuevoUsuario.Rol === "super") {
       const confirmacion = window.confirm(
         "¿Está seguro de que desea crear un usuario con todos los permisos?"
@@ -98,7 +124,7 @@ const AdminComponent = () => {
         "http://172.31.33.33:5000/topologias/download"
       );
       const topologias = response.data;
-      console.log("Datos de topologias:", topologias);
+
       // Crear un archivo JSON y disparar la descarga
       const jsonString = JSON.stringify(topologias, null, 2); // `null, 2` para un formato legible
       const blob = new Blob([jsonString], { type: "application/json" });
@@ -230,6 +256,36 @@ const AdminComponent = () => {
           </tbody>
         </table>
       </section>
+
+      <h1>datos_cre_daas</h1>
+      {datos_cre_daas.length === 0 ? (
+        <p>No hay conexiones RPHY disponibles.</p>
+      ) : (
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>Equipo</th>
+              <th>Puerto</th>
+              <th>BW</th>
+              <th>Input</th>
+              <th>Output</th>
+              <th>Equipo de llegada</th>
+            </tr>
+          </thead>
+          <tbody>
+            {datos_cre_daas.map((conexion) => (
+              <tr key={conexion.cre}>
+                <td>{conexion.cre}</td>
+                <td>{conexion.puerto_cre}</td>
+                <td>{conexion.bw}</td>
+                <td>{conexion.input}</td>
+                <td>{conexion.output}</td>
+                <td>{conexion.equipo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };

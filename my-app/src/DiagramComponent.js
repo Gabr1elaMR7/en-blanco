@@ -50,13 +50,6 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
           puertosSal1.push(topologia.TrkROU);
         }
       });
-
-      // Imprime los datos estructurados para depuración
-      console.log("Datos de la Base de Datos:", topologias);
-      console.log("Equipos Destino:", equiposDestino);
-      console.log("Equipos ROU:", equiposROU);
-      console.log("Puertos Entrada 1:", puertosEnt1);
-      console.log("Puertos Salida 1:", puertosSal1);
     }
   };
 

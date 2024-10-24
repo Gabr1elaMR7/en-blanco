@@ -6,6 +6,7 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const Topologia = require("./models/topologia");
 const Usuario = require("./models/usuario");
+const db = require('./db');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -289,7 +290,7 @@ app.delete("/usuarios/:id", async (req, res) => {
 });
 
 // Solicitud para obtener un archivo JSON de toda la colección `Topologias`
-app.get("/topologias  ", async (req, res) => {
+app.get("/topologias/download", async (req, res) => {
   try {
     const nodes = await Topologia.find(); // Obtén todos los documentos de la colección
 
@@ -303,6 +304,34 @@ app.get("/topologias  ", async (req, res) => {
   }
 });
 
+app.get('/conexiones_rphy', (req, res) => {
+  db.query('SELECT * FROM conexiones_rphy', (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Error en la consulta' });
+    }
+    res.json(results);
+  });
+});
+
+
+app.get('/equipos_rphy', (req, res) => {
+  db.query('SELECT * FROM equipos_rphy', (error, results) => {
+    if (error) {
+      return res.status(500).json({ error: 'Error en la consulta' });
+    }
+    res.json(results);
+  });
+});
+
+app.get('/datos_cre_daas', (req, res) => {
+  db.query('SELECT * FROM datos_cre_daas LIMIT 10', (error, results) => {
+    console.log("Consulta Mysql", results)
+    if (error) {
+      return res.status(500).json({ error: 'Error en la consulta' });
+    }
+    res.json(results);
+  });
+});
 
 app.listen(port, () => {
   console.log(`EL servicio se esta ejecutando sobre el puerto: ${port}`);

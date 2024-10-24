@@ -29,8 +29,6 @@ const Login = ({ onLogin }) => { // Asegúrate de recibir onLogin como prop
         onLogin(Rol); // Llama a onLogin para actualizar el estado en el componente padre
         navigate("/"); // Redirige al usuario a la página principal
         setMensaje("Usuario OK");
-        console.log("un",Rol);
-         // Mostrar mensaje de éxito.
       }
     } catch (error) {
       if (error.response) {

@@ -36,7 +36,6 @@ const App = () => {
     setIsAuthenticated(true);
     navigate("/");
     setUserRole(rol);
-    console.log("rol recibido",rol);
   };
 
   const handleLogout = () => {
@@ -265,7 +264,7 @@ const App = () => {
                               target="_blank"
                               rel="noopener noreferrer"
                             >
-                              Página Otto
+                              BackOffice Alambrico
                             </a>
                           </li>
                         </ul>

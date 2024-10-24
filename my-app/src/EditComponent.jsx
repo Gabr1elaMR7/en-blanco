@@ -4,7 +4,7 @@ import styles from "./Estilos/EditComponent.module.css";
 
 const EditComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchTechnology, setSearchTechnology] = useState("");
+  const [searchTechnology, setSearchTechnology] =  useState("FTTO");
   const [editingData, setEditingData] = useState([]);
   const [topologiaCreada, setTopologiaCreada] = useState(false); // Nuevo estado para el mensaje
 
@@ -28,7 +28,7 @@ const EditComponent = () => {
       );
       console.log("Datos actualizados correctamente:", response.data);
       setTopologiaCreada(true); // Se establece en true al guardar correctamente
-      alert("La topología se creó exitosamente."); 
+      alert("La topología se Actualizo exitosamente."); 
     } catch (error) {
       console.error("Error al guardar los datos:", error);
       setTopologiaCreada(false); // En caso de error, se asegura de no mostrar el mensaje de éxito
@@ -79,7 +79,7 @@ const EditComponent = () => {
       {/* Mensaje de éxito */}
       {topologiaCreada && (
         <div className={styles.cuadroExito}>
-          La topología se creó exitosamente.
+          La topología se edito exitosamente.
         </div>
       )}
 

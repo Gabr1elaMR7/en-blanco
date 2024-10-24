@@ -255,7 +255,7 @@ function CrearComponent() {
               type="text"
               id="equipoTx3"
               value={equipoTx3}
-              onChange={(e) => setEquipoTx3(e.target.value)}
+              onCFhange={(e) => setEquipoTx3(e.target.value)}
             />
           </div>
           <div>

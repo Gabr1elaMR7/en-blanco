@@ -51,10 +51,8 @@ export const crearMatriz = (topologias = []) => {
       }
     });
 
-    console.log("Matriz helper:", matriz);
-    return matriz;
+   return matriz;
   }
 
-  console.log("topologias helper", topologias);
   return topologias;
 };

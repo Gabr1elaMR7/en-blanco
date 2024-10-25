@@ -1,0 +1,14 @@
+.filaActiva {
+    color: red !important; /* Forzar el color rojo */
+    background-color: rgba(255, 0, 0, 0.1); /* Fondo ligero rojo */
+  }
+  
+
+  .indicadorActivo {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    background-color: green;
+    border-radius: 50%;
+  }
+  

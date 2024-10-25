@@ -314,8 +314,18 @@ app.get('/conexiones_rphy', (req, res) => {
 });
 
 
-app.get('/equipos_rphy', (req, res) => {
-  db.query('SELECT * FROM equipos_rphy', (error, results) => {
+app.get('/datos_cre_daas', (req, res) => {
+  const { query } = req.query;
+
+  let sqlQuery = 'SELECT * FROM datos_cre_daas';
+  if (query) {
+    // Filtra la consulta según el parámetro de búsqueda, ajusta el campo según tus necesidades
+    sqlQuery += ` WHERE cre LIKE '%${query}%'`; 
+  }
+
+  // Elimina el límite para que la consulta no esté restringida a 10 resultados
+  db.query(sqlQuery, (error, results) => {
+    console.log("Consulta Mysql", results);
     if (error) {
       return res.status(500).json({ error: 'Error en la consulta' });
     }
@@ -323,15 +333,28 @@ app.get('/equipos_rphy', (req, res) => {
   });
 });
 
-app.get('/datos_cre_daas', (req, res) => {
-  db.query('SELECT * FROM datos_cre_daas LIMIT 10', (error, results) => {
-    console.log("Consulta Mysql", results)
-    if (error) {
-      return res.status(500).json({ error: 'Error en la consulta' });
+app.get('/equipos_grafana', (req, res) => {
+  const { equipo } = req.query;
+
+  if (!equipo) {
+    return res.status(400).json({ error: 'El parámetro "equipo" es obligatorio' });
+  }
+
+  db.query(
+    'SELECT * FROM equipos_grafana WHERE equipo = ?',
+    
+    [equipo],
+    
+    (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: 'Error en la consulta' });
+      }
+      console.log("grafana resultados",results);
+      res.json(results);
     }
-    res.json(results);
-  });
+  );
 });
+
 
 app.listen(port, () => {
   console.log(`EL servicio se esta ejecutando sobre el puerto: ${port}`);

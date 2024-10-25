@@ -1,8 +1,9 @@
 .barraLateral {
   width: 20%;
+  height: 80%;
+  background-color: rgb(231, 231, 231);
   padding: 20px;
   margin-top: 20px;
-  background-color: #c9c9c9;
   border-radius: 15px;
 }
 
@@ -14,11 +15,17 @@
   color: black;
 }
 
+.barraLateral p {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
 .barraLateral ul { 
   list-style: none; 
   padding: 0; 
   text-align: justify;
   font-size: 15px; 
+
 
 }
 
@@ -37,6 +44,12 @@
   font-weight: bold;
   text-decoration: underline;
   background-color: rgb(253, 113, 113);
+  border-radius: 5px;
+  text-decoration: none;
+}
+
+.busquedaContainer{
+
   border-radius: 5px;
 }
 

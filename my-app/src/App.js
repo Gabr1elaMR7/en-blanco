@@ -6,6 +6,7 @@ import Login from "./Login";
 import DiagramComponent from "./DiagramComponent";
 import { Viscomponent } from "./Viscomponent";
 import TableComponent from "./TableComponent";
+import TablasStatusEquiposComponent from "./TablasStatusEquiposComponent";
 import EditComponent from "./EditComponent";
 import CrearComponent from "./CrearComponent";
 import AdminComponent from "./AdminComponent";
@@ -163,112 +164,116 @@ const App = () => {
                 <main>
                   <div className={styles.todoContenedorInicio}>
                     <div className={styles.barraLateral}>
-                      <nav>
-                        <form
-                          className={styles.FormularioBusquedaInicial}
-                          onSubmit={handleSubmit}
-                        >
-                          <h1>BUSQUEDA DE EQUIPO</h1>
-                          <input
-                            className={styles.barraBusqueda}
-                            type="text"
-                            id="buscador"
-                            placeholder="Nombre del equipo"
-                            value={consulta}
-                            onChange={handleInputChange}
-                          />
-                          <button className={styles.botonBuscar} type="submit">
-                            Buscar
-                          </button>
-                        </form>
-                        {/* Mostrar sugerencias */}
-                        {sugerencias.length > 0 && (
-                          <ul className={styles.sugerencias}>
-                            {sugerencias.map((suggestion) => (
-                              <li
-                                key={suggestion._id}
-                                onClick={() =>
-                                  handleSelectSuggestion(suggestion)
-                                }
-                                className={styles.sugerenciaItem}
-                              >
-                                {suggestion.EquipoDestino}
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        <select
-                          className={styles.tecnologiaBusqueda}
-                          id="tecnologia"
-                          value={tec}
-                          onChange={handleSelectChange}
-                        >
-                          <option value="CMTS">CMTS</option>
-                          <option value="FTTH">FTTH</option>
-                          <option value="FTTO">FTTO</option>
-                        </select>
-                      </nav>
-                      <br />
-                      <aside>
-                        {consultaGuardada && (
-                          <div>
-                            <p>Última consulta: {consultaGuardada}</p>
-                          </div>
-                        )}
+                      <div className={styles.busquedaContainer}>
+                        <nav>
+                          <form
+                            className={styles.FormularioBusquedaInicial}
+                            onSubmit={handleSubmit}
+                          >
+                            <h1>BUSQUEDA DE EQUIPO</h1>
+                            <input
+                              className={styles.barraBusqueda}
+                              type="text"
+                              id="buscador"
+                              placeholder="Nombre del equipo"
+                              value={consulta}
+                              onChange={handleInputChange}
+                            />
+                            <button
+                              className={styles.botonBuscar}
+                              type="submit"
+                            >
+                              Buscar
+                            </button>
+                          </form>
+                          {/* Mostrar sugerencias */}
+                          {sugerencias.length > 0 && (
+                            <ul className={styles.sugerencias}>
+                              {sugerencias.map((suggestion) => (
+                                <li
+                                  key={suggestion._id}
+                                  onClick={() =>
+                                    handleSelectSuggestion(suggestion)
+                                  }
+                                  className={styles.sugerenciaItem}
+                                >
+                                  {suggestion.EquipoDestino}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                          <select
+                            className={styles.tecnologiaBusqueda}
+                            id="tecnologia"
+                            value={tec}
+                            onChange={handleSelectChange}
+                          >
+                            <option value="CMTS">CMTS</option>
+                            <option value="FTTH">FTTH</option>
+                            <option value="FTTO">FTTO</option>
+                          </select>
+                        </nav>
+                        <br />
+                        <aside>
+                          {consultaGuardada && (
+                            <div>
+                              <p>Última consulta: {consultaGuardada}</p>
+                            </div>
+                          )}
+                        </aside>
+                      </div>
 
-                        <ul>
-                          <h1>
-                            Contenido Relacionado
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="16"
-                              height="16"
-                              fill="currentColor"
-                              class="bi bi-box-arrow-in-up-right"
-                              viewBox="0 0 16 16"
-                            >
-                              <path
-                                fill-rule="evenodd"
-                                d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"
-                              />
-                              <path
-                                fill-rule="evenodd"
-                                d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"
-                              />
-                            </svg>
-                          </h1>
-                          <li>
-                            <a
-                              href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Sharepoint Certificación
-                            </a>
-                          </li>
-                         
-                          <li>
-                            <a
-                              href="https://claromovilco.sharepoint.com/sites/JEFATURABACKOFFICEALAMBRICO/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FJEFATURABACKOFFICEALAMBRICO%2FDocumentos%20compartidos%2FBITACORA%2FFTTH%2F3%2E%20ATPs&amp;p=true&amp;ga=1"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              Sharepoint OLT´s Back Office
-                            </a>
-                          </li>
+                      <ul>
+                        <h1>
+                          Contenido Relacionado
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="16"
+                            height="16"
+                            fill="currentColor"
+                            class="bi bi-box-arrow-in-up-right"
+                            viewBox="0 0 16 16"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"
+                            />
+                          </svg>
+                        </h1>
+                        <li>
+                          <a
+                            href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Sharepoint Certificación
+                          </a>
+                        </li>
 
-                        
-                          <li>
-                            <a
-                              href="http://172.31.33.21/index.php#"
-                              target="_blank"
-                              rel="noopener noreferrer"
-                            >
-                              BackOffice Alambrico
-                            </a>
-                          </li>
-                        </ul>
-                      </aside>
+                        <li>
+                          <a
+                            href="https://claromovilco.sharepoint.com/sites/JEFATURABACKOFFICEALAMBRICO/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FJEFATURABACKOFFICEALAMBRICO%2FDocumentos%20compartidos%2FBITACORA%2FFTTH%2F3%2E%20ATPs&amp;p=true&amp;ga=1"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Sharepoint OLT´s Back Office
+                          </a>
+                        </li>
+
+                        <li>
+                          <a
+                            href="http://172.31.33.21/index.php#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            BackOffice Alambrico
+                          </a>
+                        </li>
+                      </ul>
                     </div>
                     <article className={styles.diagramaContainer}>
                       <DiagramComponent
@@ -280,6 +285,11 @@ const App = () => {
                         query={consultaGuardada}
                         tecnologia={tec}
                       />
+                      {tec === "CMTS" && (
+                        <TablasStatusEquiposComponent
+                          query={consultaGuardada}
+                        />
+                      )}
                     </article>
                   </div>
                 </main>

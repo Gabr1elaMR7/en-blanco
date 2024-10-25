@@ -5,8 +5,6 @@ import styles from "./Estilos/AdminGestion.module.css";
 const AdminComponent = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const [datos_cre_daas, setDatos_cre_daas] = useState([]);
   const [mostrarFormulario, setMostrarFormulario] = useState(false); // Para mostrar/ocultar formulario
   const [nuevoUsuario, setNuevoUsuario] = useState({
     NombreUsuario: "",
@@ -27,19 +25,7 @@ const AdminComponent = () => {
       }
     };
 
-    const obtenerdatos_cre_daas = async () => {
-      try {
-        const response = await axios.get(
-          "http://172.31.33.33:5000/datos_cre_daas"
-        );
-        setDatos_cre_daas(response.data); // Guardar las conexiones
-      } catch (error) {
-        console.error("Error al obtener conexiones RPHY:", error);
-      }
-    };
-
-    obtenerdatos_cre_daas();
-    obtenerUsuarios();
+   obtenerUsuarios();
   }, []);
 
   const handleInputChange = (e) => {
@@ -257,35 +243,7 @@ const AdminComponent = () => {
         </table>
       </section>
 
-      <h1>datos_cre_daas</h1>
-      {datos_cre_daas.length === 0 ? (
-        <p>No hay conexiones RPHY disponibles.</p>
-      ) : (
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th>Equipo</th>
-              <th>Puerto</th>
-              <th>BW</th>
-              <th>Input</th>
-              <th>Output</th>
-              <th>Equipo de llegada</th>
-            </tr>
-          </thead>
-          <tbody>
-            {datos_cre_daas.map((conexion) => (
-              <tr key={conexion.cre}>
-                <td>{conexion.cre}</td>
-                <td>{conexion.puerto_cre}</td>
-                <td>{conexion.bw}</td>
-                <td>{conexion.input}</td>
-                <td>{conexion.output}</td>
-                <td>{conexion.equipo}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      
     </div>
   );
 };

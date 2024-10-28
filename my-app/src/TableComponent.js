@@ -6,51 +6,61 @@ const TableComponent = ({ query, tecnologia }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    console.log(data);
     const fetchData = async () => {
       try {
         const response = await axios.get(
           "http://172.31.33.33:5000/topologias",
           {
-            params: { query, tecnologia }, // Enviar la consulta como parámetro
+            params: { query, tecnologia },
           }
         );
-        setData(response.data);
+
+        // Filtrar para eliminar duplicados según 'EquipoDestino'
+        const uniqueData = response.data.reduce((acc, current) => {
+          const x = acc.find(
+            (item) => item.EquipoDestino === current.EquipoDestino
+          );
+          if (!x) {
+            return acc.concat([current]);
+          } else {
+            return acc;
+          }
+        }, []);
+
+        setData(uniqueData);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
     fetchData();
-  }, [query, tecnologia]); // Actualiza cuando la consulta cambia
+  }, [query, tecnologia]);
 
-  if (data.length == 0) {
-    return;
+  if (data.length === 0) {
+    return null;
   }
+
   return (
     <div className="table-responsive">
-      <table className="table table-striped table-hover">
-        <thead>
+      <table className="table table-striped table-hover table-bordered text-center">
+        <thead className="table-dark">
           <tr>
-            <th>Ip Equipo Destino</th>
+            <th>Ip Equipo Origen</th>
+            <th>Ubicacion Origen</th>
             <th>Equipo Destino</th>
-            <th>Puerto Salida</th>
-            <th>Puerto Llegada</th>
-            <th>Equipo ROU</th>
+            <th>Ubicacion Equipo Destino</th>
             <th>IpEquipo ROU</th>
-           
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item._id}>
               <td>{item.IpEquipoDestino}</td>
-              <td>{item.EquipoDestino}</td>
-              <td>{item.TrunkDest}</td>
-              <td>{item.TrkROU}</td>
+              <td>{item.UbicacionEquipoDestino}</td>
+              
               <td>{item.EquipoROU}</td>
+              <td>{item.UbicacionEquipoROU}</td>
               <td>{item.IpEquipoROU}</td>
-            
             </tr>
           ))}
         </tbody>

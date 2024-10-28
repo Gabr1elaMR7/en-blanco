@@ -7,6 +7,7 @@ const connection = mysql.createConnection({
     database: 'r_phy',
     port: 3306,
     connectTimeout: 100
+
 });
 
 connection.connect((err) => {

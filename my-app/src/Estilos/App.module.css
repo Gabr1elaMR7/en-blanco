@@ -53,6 +53,16 @@
   border-radius: 5px;
 }
 
+.sugerencias {
+  position: absolute;
+  background-color: white;
+  border: 1px solid #ddd;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  display: none !important;
+}
+
 
 .diagramaContainer {
   width: 80%;

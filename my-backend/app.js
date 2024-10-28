@@ -25,10 +25,12 @@ mongoose.connect("mongodb://172.31.33.33:27017/Claro", {
 app.get("/topologias", async (req, res) => {
   let { query, tecnologia } = req.query;
   let filter = {};
-
   if (query) {
+    // Si query tiene más de 10 caracteres, usamos una expresión regular
+    if (query.length > 12) {
+      query = new RegExp(query, "i");
+    }
     filter.EquipoDestino = query;
-    query = new RegExp(query, "i");
   }
 
   if (tecnologia) {
@@ -325,7 +327,7 @@ app.get('/datos_cre_daas', (req, res) => {
 
   // Elimina el límite para que la consulta no esté restringida a 10 resultados
   db.query(sqlQuery, (error, results) => {
-    console.log("Consulta Mysql", results);
+  
     if (error) {
       return res.status(500).json({ error: 'Error en la consulta' });
     }
@@ -355,6 +357,28 @@ app.get('/equipos_grafana', (req, res) => {
   );
 });
 
+
+app.get('/equipos_grafana_conjunto', (req, res) => {
+  const { equipo } = req.query;
+
+  if (!equipo) {
+    return res.status(400).json({ error: 'El parámetro "equipo" es obligatorio' });
+  }
+
+  db.query(
+    'SELECT * FROM vista_conjunto_datos_cre WHERE cre= ?',
+    
+    [equipo],
+    
+    (error, results) => {
+      if (error) {
+        return res.status(500).json({ error: 'Error en la consulta' });
+      }
+      
+      res.json(results);
+    }
+  );
+});
 
 app.listen(port, () => {
   console.log(`EL servicio se esta ejecutando sobre el puerto: ${port}`);

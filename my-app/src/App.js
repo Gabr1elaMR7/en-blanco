@@ -26,7 +26,6 @@ const App = () => {
   const [consulta, setConsulta] = useState("");
   const [consultaGuardada, setConsultaGuardada] = useState("");
   const [tec, setTecnologia] = useState("FTTH");
-  const [sugerencias, setSugerencias] = useState([]);
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
   const [userRole, setUserRole] = useState("");
 
@@ -52,24 +51,22 @@ const App = () => {
     const value = event.target.value;
     setConsulta(value); // Actualiza el estado con el input del usuario
 
-    // Realiza la búsqueda en la base de datos solo si hay más de un carácter
-    if (value.length > 1) {
+   if (value.length >= 10) {
       try {
         const response = await axios.get(
           `http://172.31.33.33:5000/topologias?query=${value}`
         );
-        setSugerencias(response.data); // Actualiza las sugerencias basadas en la respuesta
+        // Actualiza la consulta guardada sólo si la respuesta es exitosa
+        if (response.data) {
+          setConsultaGuardada(value);
+        }
       } catch (error) {
-        console.error("Error al obtener las sugerencias:", error);
+        console.error("Error al obtener la búsqueda:", error);
       }
     } else {
-      setSugerencias([]); // Limpia las sugerencias si el input es corto
+      // Limpiar consulta guardada si la longitud es menor a 10
+      setConsultaGuardada("");
     }
-  };
-
-  const handleSelectSuggestion = (suggestion) => {
-    setConsulta(suggestion.EquipoDestino); // Llena el input con la sugerencia seleccionada
-    setSugerencias([]); // Limpia las sugerencias
   };
 
   const handleSelectChange = (event) => {
@@ -186,22 +183,7 @@ const App = () => {
                               Buscar
                             </button>
                           </form>
-                          {/* Mostrar sugerencias */}
-                          {sugerencias.length > 0 && (
-                            <ul className={styles.sugerencias}>
-                              {sugerencias.map((suggestion) => (
-                                <li
-                                  key={suggestion._id}
-                                  onClick={() =>
-                                    handleSelectSuggestion(suggestion)
-                                  }
-                                  className={styles.sugerenciaItem}
-                                >
-                                  {suggestion.EquipoDestino}
-                                </li>
-                              ))}
-                            </ul>
-                          )}
+
                           <select
                             className={styles.tecnologiaBusqueda}
                             id="tecnologia"
@@ -273,18 +255,28 @@ const App = () => {
                             BackOffice Alambrico
                           </a>
                         </li>
+
+                        <li>
+                          <a
+                            href="http://172.31.33.33:3000/dashboards"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            DASHBOARD CABLE
+                          </a>
+                        </li>
                       </ul>
                     </div>
                     <article className={styles.diagramaContainer}>
+                      <TableComponent
+                        query={consultaGuardada}
+                        tecnologia={tec}
+                      />
                       <DiagramComponent
                         consulta={consultaGuardada}
                         tecnologia={tec}
                       />
                       <Viscomponent query={consultaGuardada} tecnologia={tec} />
-                      <TableComponent
-                        query={consultaGuardada}
-                        tecnologia={tec}
-                      />
                       {tec === "CMTS" && (
                         <TablasStatusEquiposComponent
                           query={consultaGuardada}

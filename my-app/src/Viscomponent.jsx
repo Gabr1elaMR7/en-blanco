@@ -183,6 +183,10 @@ export const Viscomponent = ({ query, tecnologia }) => {
   }, [matrizDataVis]);
 
   function gimag(label) {
+
+    if (!label) {
+      return;
+    }
     const upperLabel = label.toUpperCase();
     switch (true) {
       case upperLabel.includes("ZAC"):

@@ -5,7 +5,7 @@ import * as XLSX from "xlsx";
 
 const TablasStatusEquiposComponent = ({ query }) => {
   const [datos_cre_daas, setDatos_cre_daas] = useState([]);
-
+  const audio = new Audio("/sonidos/videoplayback.m4a");
   const [equiposGrafanaConjunto, setEquiposGrafanaConjunto] = useState([]);
 
   useEffect(() => {
@@ -30,6 +30,13 @@ const TablasStatusEquiposComponent = ({ query }) => {
         if (responseGrafana.data.length > 0) {
           setEquiposGrafanaConjunto(responseGrafana.data);
         }
+
+        responseConexiones.data.forEach((conexion) => {
+          if (conexion.estado === "inactive") {
+            audio.play();
+          }
+        });
+        
       } catch (error) {
         console.error("Error al obtener los datos:", error);
       }
@@ -81,9 +88,19 @@ const TablasStatusEquiposComponent = ({ query }) => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Datos");
     const fechaHora = new Date();
-    const opciones = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
-    const fechaFormateada = fechaHora.toLocaleString('es-CO', opciones).replace(/[\/:]/g, '-');
-  
+    const opciones = {
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
+    };
+    const fechaFormateada = fechaHora
+      .toLocaleString("es-CO", opciones)
+      .replace(/[\/:]/g, "-");
+
     // Crear el nombre del archivo
     const nombreArchivo = `${query}_${fechaFormateada}.xlsx`;
     // Exportar el libro de trabajo a un archivo Excel
@@ -92,15 +109,15 @@ const TablasStatusEquiposComponent = ({ query }) => {
 
   return (
     <div className={styles.contenedorMainAdmin}>
-      {/* Tabla de datos de equipos_grafana_conjunto */}
-      {equiposGrafanaConjunto.length === 0 ? (
-        <p></p>
-      ) : (
+    {/* Tabla de datos de equipos_grafana_conjunto */}
+    {equiposGrafanaConjunto.length === 0 ? (
+      <p></p>
+    ) : (
+      <div className="table-responsive">
         <table className="table table-striped table-hover mt-4 table-bordered text-center">
           <thead className="table-dark">
             <tr>
-              <th>
-              </th>
+              <th></th>
               <th>EQUIPO</th>
               <th>EQUIPO DESTINO</th>
               <th>BW</th>
@@ -110,14 +127,10 @@ const TablasStatusEquiposComponent = ({ query }) => {
           <tbody>
             {equiposGrafanaConjunto.map((equipo) => (
               <tr key={equipo.cre}>
-                {" "}
-                {/* Asume que cada equipo tiene un 'id' único */}
                 <td>
                   <button
                     className="btn"
-                    onClick={
-                      () => handleGrafanaClick(equipo.equipo, equipo.cre) // Usar la nueva función
-                    }
+                    onClick={() => handleGrafanaClick(equipo.equipo, equipo.cre)}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -132,19 +145,21 @@ const TablasStatusEquiposComponent = ({ query }) => {
                     </svg>
                   </button>
                 </td>
-                <td>{equipo.cre}</td> {/* Ajusta según el campo correcto */}
-                <td>{equipo.equipo}</td> {/* Ajusta según el campo correcto */}
-                <td>{equipo.total_bw}</td>{" "}
+                <td>{equipo.cre}</td>
+                <td>{equipo.equipo}</td>
+                <td>{equipo.total_bw}</td>
               </tr>
             ))}
           </tbody>
         </table>
-      )}
+      </div>
+    )}
 
-      {datos_cre_daas.length === 0 ? (
-        <p></p>
-      ) : (
-        <table className="table table-striped table-hover table-bordered text-center vertical-align: middle;">
+    {datos_cre_daas.length === 0 ? (
+      <p></p>
+    ) : (
+      <div className="table-responsive">
+        <table className="table table-striped table-hover table-bordered text-center">
           <thead className="table-dark">
             <tr>
               <th>
@@ -154,7 +169,7 @@ const TablasStatusEquiposComponent = ({ query }) => {
                     width="16"
                     height="16"
                     fill="currentColor"
-                    class="bi bi-box-arrow-down"
+                    className="bi bi-box-arrow-down"
                     viewBox="0 0 16 16"
                   >
                     <path
@@ -231,8 +246,9 @@ const TablasStatusEquiposComponent = ({ query }) => {
             ))}
           </tbody>
         </table>
-      )}
-    </div>
+      </div>
+    )}
+  </div>
   );
 };
 

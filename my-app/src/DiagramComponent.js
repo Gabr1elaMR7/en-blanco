@@ -17,7 +17,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   const conexionesNodos = () => {
     if (equiposDestino.length > 0) {
       const equipoDestino = equiposDestino[0];
-  
+
       puertosEnt1.forEach((puerto, index) => {
         const equipoROU = equiposROU[index % equiposROU.length];
         if (equipoROU) {
@@ -29,8 +29,8 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
           });
         }
       });
-  
-      console.log('Conexiones de Nodos:', nodosConexion); // Imprime las conexiones de nodos
+
+      console.log("Conexiones de Nodos:", nodosConexion); // Imprime las conexiones de nodos
     }
   };
 
@@ -66,6 +66,8 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   const obtenerImagenBng = (equipo) => {
     if (equipo.includes("THBH")) {
       return "/imagenes/thbh (1).png";
+    } else if (equipo.includes("NGW")) {
+      return "/imagenes/alcatel.jpg";
     } else {
       return "/imagenes/receptor.png";
     }
@@ -84,12 +86,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       loc: `${500} ${index * 150}`, // Posición ajustada del ROU y el espacio con el otro equipo
     }));
 
-    const nodosTemp = [
-      ...ObjEquiposDestino,
-      ...ObjEquiposROU,
-    ];
-
-  
+    const nodosTemp = [...ObjEquiposDestino, ...ObjEquiposROU];
 
     setNodes(nodosTemp);
     setNodesConection(nodosConexion);
@@ -133,7 +130,6 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         margin: 10,
         fromSpot: go.Spot.LeftRightSides,
         toSpot: go.Spot.LeftRightSides,
-        
       },
       $(
         go.Picture,
@@ -209,13 +205,12 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       ref={diagramRef}
       style={{
         width: "100%",
-        height: "300px",
+        height: "400px",
         backgroundColor: "#383838",
         borderRadius: "15px", // Aquí redondeas las esquinas
       }}
     />
   );
-  
 };
 
 export default DiagramComponent;

@@ -4,7 +4,7 @@ import styles from "./Estilos/EditComponent.module.css";
 
 const EditComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchTechnology, setSearchTechnology] =  useState("FTTO");
+  const [searchTechnology, setSearchTechnology] = useState("FTTO");
   const [editingData, setEditingData] = useState([]);
   const [topologiaCreada, setTopologiaCreada] = useState(false); // Nuevo estado para el mensaje
 
@@ -28,18 +28,22 @@ const EditComponent = () => {
       );
       console.log("Datos actualizados correctamente:", response.data);
       setTopologiaCreada(true); // Se establece en true al guardar correctamente
-      alert("La topología se Actualizo exitosamente."); 
+      alert("La topología se Actualizo exitosamente.");
     } catch (error) {
       console.error("Error al guardar los datos:", error);
       setTopologiaCreada(false); // En caso de error, se asegura de no mostrar el mensaje de éxito
     }
   };
   const handleDelete = async (id) => {
-    const confirmDelete = window.confirm("¿Está seguro que desea eliminar este elemento?");
+    const confirmDelete = window.confirm(
+      "¿Está seguro que desea eliminar este elemento?"
+    );
     if (confirmDelete) {
       try {
         await axios.delete(`http://172.31.33.33:5000/topologias/${id}`);
-        setEditingData((prevData) => prevData.filter((item) => item._id !== id));
+        setEditingData((prevData) =>
+          prevData.filter((item) => item._id !== id)
+        );
         alert("Elemento eliminado con éxito.");
       } catch (error) {
         console.error("Error al eliminar el elemento:", error);
@@ -87,11 +91,26 @@ const EditComponent = () => {
       {editingData.map((item) => (
         <div key={item._id} className={styles.formContainer}>
           <form className={styles.formularioEditar}>
-            <img className={styles.borrarBoton}
+            {/* <img
+              className={styles.borrarBoton}
               src="/imagenes/eliminar icono.png"
               onClick={() => handleDelete(item._id)}
               alt="Eliminar"
-            />
+            /> */}
+            <svg
+              className={styles.borrarBoton}
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              onClick={() => handleDelete(item._id)}
+              alt="Eliminar"
+              fill="currentColor"
+              class="bi bi-trash"
+              viewBox="0 0 16 16"
+            >
+              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
+              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+            </svg>
             <br></br>
             <label>IP OLT/CMTS:</label>
             <input
@@ -434,8 +453,6 @@ const EditComponent = () => {
                 );
               }}
             />
-
-
 
             <button
               type="button"

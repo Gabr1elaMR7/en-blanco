@@ -9,8 +9,8 @@ body {
 }
 
 main {
-  margin: 50px;
-  /* Aplicar margen alrededor del elemento principal */
+  margin: 35px;
+  margin-top: 10px;
 }
 
 .bandera {
@@ -25,7 +25,6 @@ main {
 .banderaContainer {
   display: flex;
   align-items: center;
-  /* Alinea verticalmente los elementos */
 }
 
 .dropdown {
@@ -35,7 +34,7 @@ main {
 .dropdown :hover {
   transform: scale(1.03);
   border-radius: 10px;
- 
+
 }
 
 .mainContainer {
@@ -83,6 +82,7 @@ main {
   /* Elimina el subrayado del enlace */
   color: inherit;
   /* Asegura que el color del texto sea heredado */
+  text-decoration: none !important;
 }
 
 .cuadroBotones:hover {
@@ -115,6 +115,7 @@ header h1 {
   flex-grow: 1;
 }
 
+
 header img {
   height: 35px;
   /* Ajusta el tamaño de la imagen según sea necesario */
@@ -122,11 +123,24 @@ header img {
   right: 45px;
 }
 
+/* Agregar esto a tu CSS existente */
+
+@media (max-width: 768px) {
+  header h1 {
+    display: none; /* Oculta el encabezado en pantallas pequeñas */
+  }
+}
+
+
 footer {
   text-align: center;
   padding: 20px;
   border-top: 1px solid #aa1f1f;
   background-color: rgb(228, 228, 228);
+}
+
+footer p {
+  color: black;
 }
 
 h1 {

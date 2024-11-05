@@ -92,3 +92,13 @@
 .agregarUsser select {
     width: 25%;
 }
+
+@media (max-width: 768px){
+    .botonUsuario,.botonJson{
+        font-size: 10px;
+    }
+    .tituloAdmin{
+        height: auto;
+        font-size: 14px;
+    }
+}

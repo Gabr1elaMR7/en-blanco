@@ -4,7 +4,8 @@
   border-radius: 10px;
   padding: 10px;
   color: white;
-  height: 150px;
+
+  height: auto;
 
 }
 
@@ -130,4 +131,64 @@
   margin: 20px 0;
   border-radius: 5px;
   text-align: center;
+}
+
+
+@media (max-width: 768px) {
+  .contenedorEncabezadoEditar {
+    padding: 15px;
+  }
+
+  .ingreseOlt {
+    font-size: 1rem;
+  }
+
+  .inputBusquedaEditar,
+  .selectBusquedaEditar {
+    width: 100%;
+  }
+
+  .botonBuscarEditar {
+    width: 10 0%;
+  }
+
+  .formularioEditar input,
+  .formularioEditar select {
+    width: 100%;
+    margin-top: 15px;
+  }
+
+  .formularioEditar button {
+    width: 100%;
+  }
+}
+
+@media(max-width: 1000px){
+  .contenedorEncabezadoEditar {
+    padding: 15px;
+  }
+
+  .ingreseOlt {
+    font-size: 1rem;
+  }
+
+  .inputBusquedaEditar,
+  .selectBusquedaEditar {
+    width: 100%;
+  }
+
+  .botonBuscarEditar {
+    width: 50%;
+  }
+
+  .formularioEditar input,
+  .formularioEditar label,
+  .formularioEditar select {
+    width: 50%;
+    margin-top: 15px;
+  }
+
+  .formularioEditar button {
+    width: 100%;
+  }
 }

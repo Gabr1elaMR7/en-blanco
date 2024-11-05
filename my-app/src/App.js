@@ -1,6 +1,7 @@
 //App.js front
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import AutoComplete from "@tarekraafat/autocomplete.js";
 import axios from "axios";
 import Login from "./Login";
 import DiagramComponent from "./DiagramComponent";
@@ -11,6 +12,7 @@ import EditComponent from "./EditComponent";
 import CrearComponent from "./CrearComponent";
 import AdminComponent from "./AdminComponent";
 import ProtectedRoute from "./ProtectedRoute";
+import DashboardComponent from "./DashboarComponent";
 
 import {
   useNavigate,
@@ -28,9 +30,19 @@ const App = () => {
   const [tec, setTecnologia] = useState("FTTH");
   const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticación
   const [userRole, setUserRole] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const location = useLocation(); // Para obtener la ruta actual
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    const storedRole = localStorage.getItem("userRole");
+    if (storedToken) {
+      setIsAuthenticated(true);
+      setUserRole(storedRole);
+    }
+  }, []);
 
   const handleLogin = (rol) => {
     setIsAuthenticated(true);
@@ -49,23 +61,21 @@ const App = () => {
 
   const handleInputChange = async (event) => {
     const value = event.target.value;
-    setConsulta(value); // Actualiza el estado con el input del usuario
+    setConsulta(value);
 
-   if (value.length >= 10) {
+    if (value.length >= 10) {
       try {
         const response = await axios.get(
           `http://172.31.33.33:5000/topologias?query=${value}`
         );
-        // Actualiza la consulta guardada sólo si la respuesta es exitosa
         if (response.data) {
-          setConsultaGuardada(value);
+          setSuggestions(response.data.map((item) => item.EquipoDestino));
         }
       } catch (error) {
         console.error("Error al obtener la búsqueda:", error);
       }
     } else {
-      // Limpiar consulta guardada si la longitud es menor a 10
-      setConsultaGuardada("");
+      setSuggestions([]);
     }
   };
 
@@ -76,7 +86,10 @@ const App = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     setConsultaGuardada(consulta); // Guarda la consulta actual
-    // Aquí puedes realizar la búsqueda en la base de datos, si es necesario
+  };
+
+  const handleRefresh = () => {
+    setConsultaGuardada(consulta); // Refresca usando la última consulta ingresada
   };
 
   return (
@@ -101,20 +114,6 @@ const App = () => {
 
                 <ul className="dropdown-menu">
                   <li>
-                    <a
-                      className="dropdown-item"
-                      href="#"
-                      onClick={handleLogout}
-                    >
-                      Salir ↩ <i className="bi bi-escape"></i>
-                    </a>
-                  </li>
-
-                  <li>
-                    <hr className="dropdown-divider" />
-                  </li>
-
-                  <li>
                     <a className="dropdown-item" href="#" onClick={admin}>
                       Gestión{" "}
                       <svg
@@ -129,19 +128,134 @@ const App = () => {
                       </svg>
                     </a>
                   </li>
+                  <li>
+                    <li>
+                      <Link to="/dashboard" className="dropdown-item">
+                        Dashboard{" "}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="16"
+                          height="16"
+                          fill="currentColor"
+                          className="bi bi-bar-chart-line"
+                          viewBox="0 0 16 16"
+                        >
+                          <path d="M0 0h1v15h15v1H0V0zm10 11h2v3h-2v-3zM4 4h2v10H4V4zm6 7h2v6h-2v-6z" />
+                        </svg>
+                      </Link>
+                    </li>
+
+                    <li>
+                      <hr className="dropdown-divider" />
+                    </li>
+                    <a
+                      className="dropdown-item"
+                      href="#"
+                      onClick={handleLogout}
+                    >
+                      Salir ↩ <i className="bi bi-escape"></i>
+                    </a>
+                  </li>
                 </ul>
               </div>
-            </div>
-            <div className="botonesContainer">
-              <Link to="/" className="cuadroBotones">
-                Inicio
-              </Link>
-              <Link to="/crear" className="cuadroBotones">
-                Crear
-              </Link>
-              <Link to="/edit" className="cuadroBotones">
-                Editar
-              </Link>
+
+              <nav class="navbar navbar-expand-lg bg-body-tertiary">
+                <div class="container-fluid">
+                  <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNavAltMarkup"
+                    aria-controls="navbarNavAltMarkup"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                  >
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+                    <div class="navbar-nav">
+                      <a class="nav-link active" aria-current="page" href="#">
+                        <Link to="/" className="cuadroBotones">
+                          Inicio
+                        </Link>
+                      </a>
+                      <a class="nav-link active" href="#">
+                        <Link to="/crear" className="cuadroBotones">
+                          Crear
+                        </Link>
+                      </a>
+                      <a class="nav-link active" href="#">
+                        <Link to="/edit" className="cuadroBotones">
+                          Editar
+                        </Link>
+                      </a>
+                    </div>
+
+                    <div className="nav-item dropdown">
+                      <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Relacionado
+                      </a>
+                      <ul className="dropdown-menu">
+                        <li>
+                          <a
+                            className="dropdown-item"
+                            href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Sharepoint Certificación
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a
+                            className="dropdown-item"
+                            href="https://claromovilco.sharepoint.com/sites/JEFATURABACKOFFICEALAMBRICO/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FJEFATURABACKOFFICEALAMBRICO%2FDocumentos%20compartidos%2FBITACORA%2FFTTH%2F3%2E%20ATPs&amp;p=true&amp;ga=1"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            Sharepoint OLT's Back Office
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a
+                            className="dropdown-item"
+                            href="http://172.31.33.21/index.php#"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            BackOffice Alambrico
+                          </a>
+                        </li>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <a
+                            className="dropdown-item"
+                            href="http://172.31.33.33:3000/dashboards"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            DASHBOARD CABLE
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </nav>
             </div>
           </div>
 
@@ -156,134 +270,57 @@ const App = () => {
           {location.pathname !== "/edit" &&
             location.pathname !== "/crear" &&
             location.pathname !== "/login" &&
-            location.pathname !== "/gestion" && (
+            location.pathname !== "/gestion" &&
+            location.pathname !== "/dashboard" && (
               <>
                 <main>
-                  <div className={styles.todoContenedorInicio}>
-                    <div className={styles.barraLateral}>
-                      <div className={styles.busquedaContainer}>
-                        <nav>
-                          <form
-                            className={styles.FormularioBusquedaInicial}
-                            onSubmit={handleSubmit}
-                          >
-                            <h1>BUSQUEDA DE EQUIPO</h1>
-                            <input
-                              className={styles.barraBusqueda}
-                              type="text"
-                              id="buscador"
-                              placeholder="Nombre del equipo"
-                              value={consulta}
-                              onChange={handleInputChange}
-                            />
-                            <button
-                              className={styles.botonBuscar}
-                              type="submit"
-                            >
-                              Buscar
-                            </button>
-                          </form>
-
-                          <select
-                            className={styles.tecnologiaBusqueda}
-                            id="tecnologia"
-                            value={tec}
-                            onChange={handleSelectChange}
-                          >
-                            <option value="CMTS">CMTS</option>
-                            <option value="FTTH">FTTH</option>
-                            <option value="FTTO">FTTO</option>
-                          </select>
-                        </nav>
-                        <br />
-                        <aside>
-                          {consultaGuardada && (
-                            <div>
-                              <p>Última consulta: {consultaGuardada}</p>
-                            </div>
-                          )}
-                        </aside>
-                      </div>
-
-                      <ul>
-                        <h1>
-                          Contenido Relacionado
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-box-arrow-in-up-right"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              d="M6.364 13.5a.5.5 0 0 0 .5.5H13.5a1.5 1.5 0 0 0 1.5-1.5v-10A1.5 1.5 0 0 0 13.5 1h-10A1.5 1.5 0 0 0 2 2.5v6.636a.5.5 0 1 0 1 0V2.5a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 .5.5v10a.5.5 0 0 1-.5.5H6.864a.5.5 0 0 0-.5.5"
-                            />
-                            <path
-                              fill-rule="evenodd"
-                              d="M11 5.5a.5.5 0 0 0-.5-.5h-5a.5.5 0 0 0 0 1h3.793l-8.147 8.146a.5.5 0 0 0 .708.708L10 6.707V10.5a.5.5 0 0 0 1 0z"
-                            />
-                          </svg>
-                        </h1>
-                        <li>
-                          <a
-                            href="https://claromovilco.sharepoint.com/sites/PROYECTOSCERTIFICACIONUNIDADHOGARES"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Sharepoint Certificación
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="https://claromovilco.sharepoint.com/sites/JEFATURABACKOFFICEALAMBRICO/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FJEFATURABACKOFFICEALAMBRICO%2FDocumentos%20compartidos%2FBITACORA%2FFTTH%2F3%2E%20ATPs&amp;p=true&amp;ga=1"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            Sharepoint OLT´s Back Office
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="http://172.31.33.21/index.php#"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            BackOffice Alambrico
-                          </a>
-                        </li>
-
-                        <li>
-                          <a
-                            href="http://172.31.33.33:3000/dashboards"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                          >
-                            DASHBOARD CABLE
-                          </a>
-                        </li>
-                      </ul>
-                    </div>
-                    <article className={styles.diagramaContainer}>
-                      <TableComponent
-                        query={consultaGuardada}
-                        tecnologia={tec}
-                      />
-                      <DiagramComponent
-                        consulta={consultaGuardada}
-                        tecnologia={tec}
-                      />
-                      <Viscomponent query={consultaGuardada} tecnologia={tec} />
-                      {tec === "CMTS" && (
-                        <TablasStatusEquiposComponent
-                          query={consultaGuardada}
+                  <nav>
+                    <form
+                
+                      onSubmit={handleSubmit}
+                    >
+                      <div className={styles.contenedorBusqueda}>
+                        <input
+                          className={styles.barraBusqueda}
+                          type="text"
+                          id="buscador"
+                          placeholder="Nombre del equipo"
+                          value={consulta}
+                          onChange={handleInputChange}
                         />
-                      )}
-                    </article>
-                  </div>
+                        <button className={styles.botonBuscar} type="submit">
+                          Buscar
+                        </button>
+                        <select
+                          className={styles.tecnologiaBusqueda}
+                          id="tecnologia"
+                          value={tec}
+                          onChange={handleSelectChange}
+                        >
+                          <option value="CMTS">CMTS</option>
+                          <option value="FTTH">FTTH</option>
+                          <option value="FTTO">FTTO</option>
+                        </select>
+                      </div>
+                      <aside className={styles.ultimaConsulta}>
+                        {consultaGuardada && (
+                          <p>Última consulta: {consultaGuardada}</p>
+                        )}
+                      </aside>
+                    </form>
+                  </nav>
+
+                  <article className={styles.diagramaContainer}>
+                    <TableComponent query={consultaGuardada} tecnologia={tec} />
+                    <DiagramComponent
+                      consulta={consultaGuardada}
+                      tecnologia={tec}
+                    />
+                    <Viscomponent query={consultaGuardada} tecnologia={tec} />
+                    {tec === "CMTS" && (
+                      <TablasStatusEquiposComponent query={consultaGuardada} />
+                    )}
+                  </article>
                 </main>
                 <footer>
                   <p>&copy; Claro Colombia</p>
@@ -311,6 +348,7 @@ const App = () => {
                     </ProtectedRoute>
                   }
                 />
+                <Route path="/dashboard" element={<DashboardComponent />} />
               </>
             )}
           </Routes>

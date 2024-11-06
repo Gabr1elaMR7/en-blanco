@@ -284,7 +284,7 @@ const App = () => {
                           className={styles.barraBusqueda}
                           type="text"
                           id="buscador"
-                          placeholder="Nombre del equipo"
+                          placeholder="Ingrese el Nombre del equipo"
                           value={consulta}
                           onChange={handleInputChange}
                         />

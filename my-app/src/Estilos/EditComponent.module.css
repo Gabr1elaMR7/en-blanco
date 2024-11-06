@@ -4,7 +4,6 @@
   border-radius: 10px;
   padding: 10px;
   color: white;
-
   height: auto;
 
 }
@@ -12,7 +11,7 @@
 .ingreseOlt {
   font-size: 20px;
   margin-top: 10px;
-  
+
   text-align: center;
 }
 
@@ -42,10 +41,47 @@
   font-weight: bold;
 }
 
+.borrarBoton {
+  width: 50px;
+  height: auto;
+  background-color: transparent;
+  top: 10px;
+  left: 50px;
+  position: absolute;
+}
+
+.borrarBoton:hover {
+  width: 55px;
+  background-color: rgb(186, 186, 186);
+}
+
 .botonBuscarEditar:hover {
   background-color: rgb(49, 49, 49);
   color: white;
   border: 1px solid white;
+}
+
+.botonguardarEditar {
+  width: 50%;
+  height: 40px;
+  margin-top: 10px;
+  background-color: #ff0202;
+  border-radius: 10px;
+  color: white;
+  font-size: medium;
+  border: 1px solid rgb(151, 0, 0);
+  /* Borde rojo */
+
+}
+
+.botonPortapelesEditar {
+  margin-left: 15px;
+  height: 40px;
+  background-color: blue;
+  border-radius: 10px;
+  color: white;
+  font-size: medium;
+  border: 1px solid rgb(53, 0, 151);
 }
 
 
@@ -91,38 +127,14 @@
   margin: 5px;
 }
 
-.formularioEditar button {
-  width: 50%;
-  height: 40px;
-  margin-top: 10px;
-  background-color: #ff0202;
-  border-radius: 10px;
-  color: white;
-  font-size: medium;
-  border: 1px solid rgb(151, 0, 0);
-  /* Borde rojo */
-
-}
 
 .formularioEditar button:hover {
-  background-color: #ca0000;
+  background-color: #515151;
   font-weight: bold;
+  border: none;
   transform: scale(1.05);
 }
 
-.borrarBoton{
-  width: 50px;
-  height: auto;
-  background-color: transparent;
-  top: 10px;
-  left: 50px;
-  position: absolute;
-}
-
-.borrarBoton:hover{
-  width: 55px;
-  background-color: rgb(186, 186, 186);
-}
 
 .cuadroExito {
   background-color: red;
@@ -163,7 +175,7 @@
   }
 }
 
-@media(max-width: 1000px){
+@media(max-width: 1000px) {
   .contenedorEncabezadoEditar {
     padding: 15px;
   }

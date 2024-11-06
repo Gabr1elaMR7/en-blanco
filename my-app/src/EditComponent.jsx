@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import axios from "axios";
 import styles from "./Estilos/EditComponent.module.css";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 
 const EditComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTechnology, setSearchTechnology] = useState("FTTO");
   const [editingData, setEditingData] = useState([]);
+
   const [topologiaCreada, setTopologiaCreada] = useState(false); // Nuevo estado para el mensaje
 
   const handleSearch = async () => {
@@ -13,7 +15,7 @@ const EditComponent = () => {
       const response = await axios.get("http://172.31.33.33:5000/topologias", {
         params: { query: searchQuery, tecnologia: searchTechnology },
       });
-      console.log("Datos obtenidos:", response.data);
+
       setEditingData(response.data); // Aquí se guarda el array completo de resultados
     } catch (error) {
       console.error("Error al buscar los datos:", error);
@@ -51,6 +53,39 @@ const EditComponent = () => {
       }
     }
   };
+
+  const handleCopyData = (item) => {
+    // Concatenate form data into a string
+    const dataToCopy = [
+      item.IpEquipoDestino,
+      item.EquipoDestino,
+      item.UbicacionEquipoDestino,
+      "", // TrunkDest (empty field)
+      "", // TrkROU (empty field)
+      item.EquipoROU, // EquipoROU (empty field)
+      item.UbicacionEquipoROU,
+      item.IpEquipoROU,
+      "", // TrkROU (empty field)
+      "", // TrkRx1 (empty field)
+      item.EquipoTx1,
+      "", // TrkTx1 (empty field)
+      "", // TrkRx2 (empty field)
+      item.EquipoTx2,
+      "", // TrkTx2 (empty field)
+      "", // TrkRx3 (empty field)
+      item.EquipoTx3,
+      "", // TrkTx3 (empty field)
+      "", // TrkRx4 (empty field)
+      item.EquipoTx4,
+      "", // TrkTx4 (empty field)
+      "", // TrkRx5 (empty field)
+      item.EquipoTx5,
+      "", // TrkTx5 (empty field)
+    ];
+
+    return dataToCopy; // Devuelve el texto a copiar
+  };
+
   return (
     <main>
       <div className={styles.contenedorEncabezadoEditar}>
@@ -88,29 +123,25 @@ const EditComponent = () => {
       )}
 
       {/* Renderiza un formulario por cada resultado */}
-      {editingData.map((item) => (
+      {editingData.map((item, index) => (
         <div key={item._id} className={styles.formContainer}>
           <form className={styles.formularioEditar}>
-            {/* <img
-              className={styles.borrarBoton}
-              src="/imagenes/eliminar icono.png"
-              onClick={() => handleDelete(item._id)}
-              alt="Eliminar"
-            /> */}
             <svg
-              className={styles.borrarBoton}
+              className={styles.borrarBoton} // Solo un className
               xmlns="http://www.w3.org/2000/svg"
               width="16"
               height="16"
               onClick={() => handleDelete(item._id)}
-              alt="Eliminar"
               fill="currentColor"
-              class="bi bi-trash"
               viewBox="0 0 16 16"
             >
-              <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5m3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0z" />
-              <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4zM2.5 3h11V2h-11z" />
+              <path d="M5.5 5.5v6a.5.5 0 1 0 1 0v-6a.5.5 0 0 0-1 0zm2.5 0v6a.5.5 0 1 0 1 0v-6a.5.5 0 0 0-1 0zm3 0v6a.5.5 0 1 0 1 0v-6a.5.5 0 0 0-1 0z" />
+              <path
+                fillRule="evenodd"
+                d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1 0-2H5V1a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v1h2.5a1 1 0 0 1 1 1zM6 2v1h4V2H6zM4 4v9a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4H4z"
+              />
             </svg>
+
             <br></br>
             <label>IP OLT/CMTS:</label>
             <input
@@ -456,6 +487,7 @@ const EditComponent = () => {
 
             <button
               type="button"
+              className={styles.botonguardarEditar}
               onClick={() =>
                 handleSave(item._id, {
                   IpEquipoDestino: item.IpEquipoDestino,
@@ -487,6 +519,26 @@ const EditComponent = () => {
             >
               Guardar
             </button>
+            {index === editingData.length - 1 && (
+              <CopyToClipboard
+                text={handleCopyData(item)}
+                onCopy={() => alert("Datos copiados al portapapeles")}
+              >
+                <button type="button" className={styles.botonPortapelesEditar}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    class="bi bi-clipboard2-fill"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M9.5 0a.5.5 0 0 1 .5.5.5.5 0 0 0 .5.5.5.5 0 0 1 .5.5V2a.5.5 0 0 1-.5.5h-5A.5.5 0 0 1 5 2v-.5a.5.5 0 0 1 .5-.5.5.5 0 0 0 .5-.5.5.5 0 0 1 .5-.5z" />
+                    <path d="M3.5 1h.585A1.5 1.5 0 0 0 4 1.5V2a1.5 1.5 0 0 0 1.5 1.5h5A1.5 1.5 0 0 0 12 2v-.5q-.001-.264-.085-.5h.585A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1" />
+                  </svg>
+                </button>
+              </CopyToClipboard>
+            )}
           </form>
         </div>
       ))}

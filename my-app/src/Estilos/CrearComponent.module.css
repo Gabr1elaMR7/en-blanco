@@ -1,5 +1,5 @@
 .contenedorDescripcion {
-  height: 100px;
+  height: auto;
   background-color: #000;
   color: white;
   border-radius: 10px;
@@ -12,11 +12,8 @@
 .crearFormulario {
   margin-top: 20px;
   display: grid;
-  /* Usar grid para organizar en columnas */
   grid-template-columns: repeat(3, 1fr);
-  /* Crear tres columnas de igual tamaño */
   gap: 20px;
-  /* Espacio entre columnas */
   background-color: rgb(207, 207, 207);
   border-radius: 10px;
   padding-left: 20px;
@@ -68,7 +65,7 @@
 .botonCrear {
   width: 95%;
   /* Ocupa todo el ancho disponible */
-  padding: 10px;
+
   background-color: #ff0202;
   /* Fondo del botón */
   color: white;
@@ -81,6 +78,7 @@
   /* Sin borde adicional para el botón */
   cursor: pointer;
   border: 1px solid #910101;
+  margin-bottom: 10px;
 }
 
 
@@ -90,8 +88,21 @@
   transform: scale(1.05);
 }
 
-
-/* CrearComponent.module.css */
+.botonExpandirCrear {
+  width: 30%;
+  /* Ocupa todo el ancho disponible */
+  padding: 10px;
+  border-radius: 5px;
+  /* Bordes redondeados */
+  margin-top: 10px;
+  /* Separación del botón del resto del contenido */
+  border: none;
+  /* Sin borde adicional para el botón */
+  cursor: pointer;
+  text-align: center;
+  background-color: transparent !important;
+  margin-bottom: 10px;
+}
 
 
 
@@ -124,42 +135,76 @@
     font-size: 12px;
   }
 
-
 }
 
-@media (max-width: 480px) {
-  .crearFormulario {
-    padding: 3px;
-    /* Muy poco padding en pantallas muy pequeñas */
+@media(max-width: 650px) {
+    
+    .crearFormulario {
+      padding: 3px;
+      /* Muy poco padding en pantallas muy pequeñas */
+    }
+
+
+
+    label {
+      font-size: 8px;
+      /* Fuente más pequeña en pantallas muy pequeñas */
+    }
+
+    input,
+    select {
+      font-size: 8px;
+      /* Fuente más pequeña para campos en pantallas muy pequeñas */
+    }
+
+    .contenedorDescripcion {
+      padding: 3px;
+    }
+
+    h1 {
+      font-size: 10px;
+    }
+
+    p {
+      font-size: 10px;
+    }
+
+
   }
 
-  h1 {
-    font-size: 20px;
-    /* Título más pequeño */
+  @media (max-width: 480px) {
+    .crearFormulario {
+      padding: 3px;
+      /* Muy poco padding en pantallas muy pequeñas */
+    }
+
+    h1 {
+      font-size: 20px;
+      /* Título más pequeño */
+    }
+
+    label {
+      font-size: 8px;
+      /* Fuente más pequeña en pantallas muy pequeñas */
+    }
+
+    input,
+    select {
+      font-size: 8px;
+      /* Fuente más pequeña para campos en pantallas muy pequeñas */
+    }
+
+    .contenedorDescripcion {
+      padding: 3px;
+    }
+
+    h1 {
+      font-size: 10px;
+    }
+
+    p {
+      font-size: 10px;
+    }
+
+
   }
-
-  label {
-    font-size: 8px;
-    /* Fuente más pequeña en pantallas muy pequeñas */
-  }
-
-  input,
-  select {
-    font-size: 8px;
-    /* Fuente más pequeña para campos en pantallas muy pequeñas */
-  }
-
-  .contenedorDescripcion {
-    padding: 3px;
-  }
-
-  h1 {
-    font-size: 10px;
-  }
-
-  p {
-    font-size: 10px;
-  }
-
-
-}

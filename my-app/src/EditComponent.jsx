@@ -125,6 +125,7 @@ const EditComponent = () => {
       {/* Renderiza un formulario por cada resultado */}
       {editingData.map((item, index) => (
         <div key={item._id} className={styles.formContainer}>
+
           <form className={styles.formularioEditar}>
             <svg
               className={styles.borrarBoton} // Solo un className

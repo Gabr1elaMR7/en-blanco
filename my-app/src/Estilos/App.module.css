@@ -34,7 +34,7 @@
 }
 
 .barraBusqueda {
-  width: 100%; /* Ocupa todo el espacio disponible */
+  width: 100%; 
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -70,8 +70,6 @@
   border: 1px solid #ccc;
   width: auto;
 }
-
-
 
 
 /* Estilo para la lista de sugerencias */

@@ -54,7 +54,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   };
 
   const obtenerImagen = (equipo) => {
-    if (equipo.includes("ZAC")) {
+    if (equipo.includes("ZAC.")) {
       return "/imagenes/zte.png";
     } else if (equipo.includes("HAC")) {
       return "/imagenes/huawei.png";
@@ -68,6 +68,8 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
       return "/imagenes/thbh (1).png";
     } else if (equipo.includes("NGW")) {
       return "/imagenes/alcatel.jpg";
+    }else if (equipo.includes("A9K")){
+      return "/imagenes/a9k.png"
     } else {
       return "/imagenes/receptor.png";
     }

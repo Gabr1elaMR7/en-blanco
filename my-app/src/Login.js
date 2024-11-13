@@ -4,9 +4,9 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import styles from "./Estilos/Login.module.css"; // Asegúrate de tener los estilos correctos en este archivo
+import styles from "./Estilos/Login.module.css"; 
 
-const Login = ({ onLogin }) => { // Asegúrate de recibir onLogin como prop
+const Login = ({ onLogin }) => { 
   const {
     register,
     handleSubmit,

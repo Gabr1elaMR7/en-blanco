@@ -1,47 +1,50 @@
 const mysql = require('mysql2');
 
-const connection = mysql.createConnection({
-    host: '172.17.153.204', // Cambia esto si es necesario
+const pool = mysql.createPool({
+    host: '172.17.153.204', 
     user: 'cable',
-    password: 'Claro2024*+', // Asegúrate de que sea la contraseña correcta
+    password: 'Claro2024*+', 
     database: 'r_phy',
     port: 3306,
-    connectTimeout: 10000
-
+    waitForConnections: true,
+    connectionLimit: 10,  
+    queueLimit: 0,
+    connectTimeout: 10000,
+    acquireTimeout: 10000,
+    keepAliveInitialDelay: 10000 // Tiempo de espera para iniciar keepAlive (ms)
 });
 
-// Función para manejar la reconexión
-function handleDisconnect() {
-    connection.connect((err) => {
-        if (err) {
-            console.error('Error al conectar a la base de datos: ' + err.stack);
-            setTimeout(handleDisconnect, 2000); // Reintentar después de 2 segundos
-        } else {
-            console.log('Conectado a la base de datos como ID ' + connection.threadId);
-            // Enviar una consulta cada minuto para mantener la conexión
-            setInterval(() => {
-                connection.query('SELECT 1', (err) => {
-                    if (err) {
-                        console.error('Consulta de keep-alive fallida:', err);
-                    }
-                });
-            },   60000); // Cada 60 segundos
-        }
-    });
 
-    connection.on('error', (err) => {
-        console.error('Error de conexión MySQL:', err);
-        if (err.code === 'PROTOCOL_CONNECTION_LOST') {
-            handleDisconnect(); // Reconectar si se pierde la conexión
-        } else {
-            // Manejar otros errores según sea necesario
-            console.error('Error no manejado:', err);
-        }
+
+function query(sql, params) {
+    return new Promise((resolve, reject) => {
+        pool.query(sql, params, (err, results) => {
+            if (err) {
+                console.error('Error en la consulta:', err);
+                reject(err);
+            } else {
+                resolve(results);
+            }
+        });
     });
 }
 
-// Iniciar el manejo de desconexiones
-handleDisconnect();
+// Ejemplo de uso de la función query
+async function exampleUsage() {
+    try {
+        const results = await query('SELECT * FROM equipos_grafana'); 
+        console.log('Resultados de la consulta:', results);
+    } catch (error) {
+        console.error('Error ejecutando la consulta:', error);
+    }
+}
 
-module.exports = connection;
+// Llamada a la función de ejemplo para probar la conexión
+exampleUsage();
+
+// Exportar el pool y la función query para uso en otros módulos
+module.exports = { pool, query };
+
+
+
 

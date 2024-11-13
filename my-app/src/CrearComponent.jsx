@@ -130,15 +130,39 @@ function CrearComponent() {
     addIfNotEmpty("TrkTx5", trkTx5);
 
     try {
-      const response = await axios.post(
-        "http://172.31.33.33:5000/topologias",
-        newTopologia
-      );
-      alert("Topología creada con éxito!");
+      // Verifica si ya existe una topología similar en la base de datos
+      const existingResponse = await axios.get("http://172.31.33.33:5000/topologias", {
+        params: newTopologia,
+      });
+    
+      if (existingResponse.data && existingResponse.data.length > 0) {
+        alert("Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos.");
+        return;
+      }
+    
+      // Si no existe, crea la nueva topología
+      await axios.post("http://172.31.33.33:5000/topologias", newTopologia);
+      alert("¡Topología creada con éxito!");
+    
     } catch (error) {
       console.error("Error al crear la topología:", error);
-      alert("Error al crear la topología.");
+
+      if (error.response && error.response.status === 400) {
+        alert("Existen campos obligatorios vacios");
+      } else {
+        // Error genérico
+        alert("Error al crear la topología. Intente nuevamente.");
+      }
+    
+      // Manejar un error específico de "conflicto" (por ejemplo, código 409)
+      if (error.response && error.response.status === 409) {
+        alert("Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos.");
+      } else {
+        // Error genérico
+        alert("Error al crear la topología. Intente nuevamente.");
+      }
     }
+    
   };
 
   return (
@@ -163,7 +187,6 @@ function CrearComponent() {
               <path d="M3.5 1h.585A1.5 1.5 0 0 0 4 1.5V2a1.5 1.5 0 0 0 1.5 1.5h5A1.5 1.5 0 0 0 12 2v-.5q-.001-.264-.085-.5h.585A1.5 1.5 0 0 1 14 2.5v12a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 14.5v-12A1.5 1.5 0 0 1 3.5 1" />
             </svg>
           </button>{" "}
-          {/* Botón para mostrar el div */}
           {showInputDiv && ( // Condicional para mostrar el div solo si showInputDiv es true
             <div>
               <label htmlFor="inputText">
@@ -183,7 +206,7 @@ function CrearComponent() {
       </div>
       <div>
         <form className={styles.crearFormulario} onSubmit={handleSubmit}>
-          {/* Campos existentes */}
+          
           <div>
             <label htmlFor="ipEquipoDestino">IP OLT/CMTS</label>
             <input
@@ -270,8 +293,7 @@ function CrearComponent() {
               <option value="FTTO">FTTO</option>
             </select>
           </div>
-          {/* Nuevos campos opcionales */}
-
+         
           {/* Nuevos campos opcionales visibles solo si `showAdditionalFields` es true */}
           {showAdditionalFields && (
             <>

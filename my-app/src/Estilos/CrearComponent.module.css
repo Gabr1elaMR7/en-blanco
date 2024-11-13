@@ -25,9 +25,7 @@
   display: block;
   /* Mostrar la etiqueta en bloque */
   font-weight: bold;
-  /* Texto en negrita */
   margin-bottom: 5px;
-  /* Separar la etiqueta del input */
   text-align: center;
 
 }
@@ -41,7 +39,6 @@
   border: 1px solid #000;
   /* Borde del campo */
   border-radius: 3px;
-  /* Bordes redondeados */
   box-sizing: border-box;
   /* Incluir padding y border en el ancho total */
   margin-bottom: 15px;
@@ -54,11 +51,9 @@
   background-color: rgb(220, 220, 220);
 }
 
-/* Asegúrate de que el CSS para el select esté bien definido y no sobrescrito */
 
 .tecCrear {
   box-sizing: border-box;
-  /* Incluye padding y border en el ancho total */
 }
 
 
@@ -75,7 +70,6 @@
   margin-top: 10px;
   /* Separación del botón del resto del contenido */
   border: none;
-  /* Sin borde adicional para el botón */
   cursor: pointer;
   border: 1px solid #910101;
   margin-bottom: 10px;
@@ -97,7 +91,6 @@
   margin-top: 10px;
   /* Separación del botón del resto del contenido */
   border: none;
-  /* Sin borde adicional para el botón */
   cursor: pointer;
   text-align: center;
   background-color: transparent !important;
@@ -121,6 +114,7 @@
   select {
     font-size: 12px;
     /* Fuente más pequeña para campos */
+    width: auto;
   }
 
   .contenedorDescripcion {
@@ -144,8 +138,6 @@
       /* Muy poco padding en pantallas muy pequeñas */
     }
 
-
-
     label {
       font-size: 8px;
       /* Fuente más pequeña en pantallas muy pequeñas */
@@ -155,6 +147,7 @@
     select {
       font-size: 8px;
       /* Fuente más pequeña para campos en pantallas muy pequeñas */
+      width: auto;
     }
 
     .contenedorDescripcion {
@@ -192,6 +185,7 @@
     select {
       font-size: 8px;
       /* Fuente más pequeña para campos en pantallas muy pequeñas */
+      width: auto;
     }
 
     .contenedorDescripcion {

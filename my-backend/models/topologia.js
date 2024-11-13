@@ -24,7 +24,7 @@ const topologiaSchema = new mongoose.Schema(
     TrkRx5: { type: String, required: false },
     EquipoTx5: { type: String, required: false },
     TrkTx5: { type: String, required: false },
-    TrkROU: { type: String, required: false },
+    TrkROU: { type: String, required: true },
     EquipoROU: { type: String, required: true },
     UbicacionEquipoROU: { type: String, required: false },
     IpEquipoROU: { type: String, required: false },

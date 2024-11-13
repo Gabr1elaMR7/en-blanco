@@ -11,7 +11,6 @@
 .ingreseOlt {
   font-size: 20px;
   margin-top: 10px;
-
   text-align: center;
 }
 
@@ -42,16 +41,17 @@
 }
 
 .borrarBoton {
-  width: 50px;
+  width: 30px;
   height: auto;
   background-color: transparent;
   top: 10px;
   left: 50px;
   position: absolute;
+  margin-top: 10px;
 }
 
 .borrarBoton:hover {
-  width: 55px;
+  width: 35px;
   background-color: rgb(186, 186, 186);
 }
 
@@ -70,7 +70,6 @@
   color: white;
   font-size: medium;
   border: 1px solid rgb(151, 0, 0);
-  /* Borde rojo */
 
 }
 
@@ -197,6 +196,36 @@
   .formularioEditar label,
   .formularioEditar select {
     width: 50%;
+    margin-top: 15px;
+  }
+
+  .formularioEditar button {
+    width: 100%;
+  }
+}
+
+@media(max-width:1500px){
+  .contenedorEncabezadoEditar {
+    padding: 15px;
+  }
+
+  .ingreseOlt {
+    font-size: 1rem;
+  }
+
+  .inputBusquedaEditar,
+  .selectBusquedaEditar {
+    width: 100%;
+  }
+
+  .botonBuscarEditar {
+    width: 50%;
+  }
+
+  .formularioEditar input,
+  .formularioEditar label,
+  .formularioEditar select {
+    width: 100%;
     margin-top: 15px;
   }
 

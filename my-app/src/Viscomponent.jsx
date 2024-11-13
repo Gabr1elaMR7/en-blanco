@@ -3,10 +3,14 @@ import "./Estilos/Viscomponent.css";
 import { useEffect, useState } from "react";
 import { getTopologias } from "./services/apiService";
 import { crearMatriz } from "./helpers/matrizDataVis";
+import html2canvas from "html2canvas";
+
+
 
 export const Viscomponent = ({ query, tecnologia }) => {
   const [data, setData] = useState([]);
   const [matrizDataVis, setMatrizDataVis] = useState([]);
+  
 
   const getData = async () => {
     try {
@@ -31,23 +35,35 @@ export const Viscomponent = ({ query, tecnologia }) => {
         autoResize: true,
         height: "100%",
         width: "100%",
-        physics: { enabled: true, wind: { x: 1, y: 0 } },
+        physics: {
+          enabled: true,
+          forceAtlas2Based: {
+            gravitationalConstant: -400, // Ajusta la intensidad de repulsión
+            centralGravity: 0.005,
+            springLength: 100, // Distancia preferida entre los nodos conectados
+            springConstant: 0.08,
+          },
+          maxVelocity: 50,
+          solver: "forceAtlas2Based",
+          timestep: 0.35,
+          stabilization: { iterations: 150 },
+        },
         layout: {
           randomSeed: 0,
           improvedLayout: false,
         },
-
         nodes: {
           borderWidth: 7,
           borderWidthSelected: 1,
           shape: "dot",
           color: {
             border: "#0d1b2a",
-            background: "#c1121f",
+            background: "#c1121f",  
           },
           font: {
-            size: 8,
+            size: 10,
             color: "c1121f",
+
           },
         },
         edges: {
@@ -59,11 +75,13 @@ export const Viscomponent = ({ query, tecnologia }) => {
             },
           },
           font: {
-            size: 5,
+            size: 10,
             color: "#c1121f",
           },
         },
       };
+      
+      
 
       var nodes = [];
       var nodeIds = {};
@@ -97,8 +115,14 @@ export const Viscomponent = ({ query, tecnologia }) => {
         }
 
         // Verifica el último nodo
+
         if (row[3] && !nodeIds[row[3]]) {
           const isException = ["FOL"].some((keyword) =>
+            row[3].toUpperCase().includes(keyword)
+          );
+
+          // Condición para verificar si el nodo contiene BNG, NGW o THBH
+          const shouldFixNode = ["BNG", "NGW", "THBH","A9K"].some((keyword) =>
             row[3].toUpperCase().includes(keyword)
           );
 
@@ -108,8 +132,13 @@ export const Viscomponent = ({ query, tecnologia }) => {
             label: row[3],
             shape: isException ? "box" : "image",
             image: isException ? "" : gimag(row[3]),
+            fixed: shouldFixNode, // Se fija solo si cumple con las palabras clave
           });
-          lastNodeId = nodeIds[row[3]]; // Establece el último nodo
+
+          // Si se cumple la condición de ser el último nodo
+          if (shouldFixNode) {
+            lastNodeId = nodeIds[row[3]]; // Establece el último nodo solo si contiene BNG, NGW o THBH
+          }
         }
       });
 
@@ -128,13 +157,14 @@ export const Viscomponent = ({ query, tecnologia }) => {
       // Reposiciona los nodos
       nodes = nodes.map((node) => {
         if (node.id === firstNodeId) {
-          return { ...node, fixed: true, x: 0, y: 0 };
+          return { ...node, fixed: true, x: 0, y: 0,size: 30 };
         }
-        if (node.id === lastNodeId) {
-          return { ...node, fixed: true, x: nodeSpacing, y: 0 };
+        if (node.id === lastNodeId && node.fixed) { // Solo si el nodo es fijo
+          return { ...node, x: nodeSpacing, y: 0,size: 30 };
         }
         return node;
       });
+      
 
       var minRoundness = 0.1; // Valor mínimo de roundness
       var maxRoundness = 0.8; // Valor máximo de roundness
@@ -183,7 +213,6 @@ export const Viscomponent = ({ query, tecnologia }) => {
   }, [matrizDataVis]);
 
   function gimag(label) {
-
     if (!label) {
       return;
     }
@@ -201,6 +230,9 @@ export const Viscomponent = ({ query, tecnologia }) => {
         return "/imagenes/AAG.png";
       case upperLabel.includes("THBH"):
         return "/imagenes/thbh (1).png";
+      case upperLabel.includes("A9K","BNG"):
+        return "/imagenes/A9K.png"; // No image for exceptions
+   
 
       case ["FOL", "ODF", "CAJA", "RACK"].some((keyword) =>
         upperLabel.includes(keyword)
@@ -224,7 +256,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
         marginTop: "20px",
         marginBottom: "20px",
         marginLeft: "auto",
-        marginRight: "auto", // Centrar en pantalla 
+        marginRight: "auto", // Centrar en pantalla
       }}
     ></div>
   );

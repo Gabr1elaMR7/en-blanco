@@ -25,7 +25,7 @@ const AdminComponent = () => {
       }
     };
 
-   obtenerUsuarios();
+    obtenerUsuarios();
   }, []);
 
   const handleInputChange = (e) => {
@@ -47,7 +47,7 @@ const AdminComponent = () => {
       alert("La contraseña debe tener al menos 8 caracteres.");
       return; // Detener la ejecución si la contraseña es demasiado corta
     }
-    if (nuevoUsuario.Rol === "super") {
+    if (nuevoUsuario.Rol === "07032005") {
       const confirmacion = window.confirm(
         "¿Está seguro de que desea crear un usuario con todos los permisos?"
       );
@@ -172,8 +172,9 @@ const AdminComponent = () => {
               onChange={handleInputChange}
               required
             >
-              <option value="super">Super</option>
-              <option value="back">Back</option>
+              <option value="07032005">Super</option>
+              <option value="20082008">Back</option>
+              <option value="67772550">Aliado</option>
             </select>
 
             <label>Contraseña:</label>
@@ -210,7 +211,6 @@ const AdminComponent = () => {
             <tr>
               <th>Nombre de Usuario</th>
               <th>Usuario (usser)</th>
-              <th>Rol</th>
               <th>Eliminar</th>
             </tr>
           </thead>
@@ -219,7 +219,7 @@ const AdminComponent = () => {
               <tr key={usuario._id}>
                 <td>{usuario.NombreUsuario}</td>
                 <td>{usuario.usser}</td>
-                <td>{usuario.Rol}</td>
+
                 <td>
                   <button
                     className="btn btn-danger"
@@ -242,8 +242,6 @@ const AdminComponent = () => {
           </tbody>
         </table>
       </section>
-
-      
     </div>
   );
 };

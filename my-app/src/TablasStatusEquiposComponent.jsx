@@ -25,12 +25,14 @@ const TablasStatusEquiposComponent = ({ query }) => {
         // Obtener la IP de Grafana relacionada con el equipo
         const responseGrafana = await axios.get(
           "http://172.31.33.33:5000/equipos_grafana_conjunto",
-          { params: { equipo: query } }
+          { params: {  query } }
         );
         if (responseGrafana.data.length > 0) {
           setEquiposGrafanaConjunto(responseGrafana.data);
+          
+          
         }
-
+        
         responseConexiones.data.forEach((conexion) => {
           if (conexion.estado === "inactive") {
             audio.play();

@@ -79,13 +79,43 @@ app.post("/topologias", async (req, res) => {
   } = req.body;
 
   // Validación de campos requeridos
-  if (!EquipoDestino || !TrunkDest || !Tecnologia || !EquipoROU) {
-    return res
-      .status(400)
-      .json({ error: "Por favor, completa todos los campos requeridos." });
+  if (!EquipoDestino || !TrunkDest ||! TrkROU || !Tecnologia || !EquipoROU) {
+    return res.status(400).json({ error: "Por favor, completa todos los campos requeridos." });
   }
 
   try {
+    // Verifica si ya existe un documento con estos campos
+    const existeTopologia = await Topologia.findOne({
+      IpEquipoDestino,
+      EquipoDestino,
+      UbicacionEquipoDestino,
+      TrunkDest,
+      Tecnologia,
+      TrkRx1,
+      EquipoTx1,
+      TrkTx1,
+      TrkRx2,
+      EquipoTx2,
+      TrkTx2,
+      TrkRx3,
+      EquipoTx3,
+      TrkTx3,
+      TrkRx4,
+      EquipoTx4,
+      TrkTx4,
+      TrkRx5,
+      EquipoTx5,
+      TrkTx5,
+      TrkROU,
+      EquipoROU,
+      UbicacionEquipoROU,
+      IpEquipoROU,
+    });
+
+    if (existeTopologia) {
+      return res.status(409).json({ error: "La topología ya existe con estos mismos valores." });
+    }
+
     const nuevaTopologia = new Topologia({
       IpEquipoDestino,
       EquipoDestino,
@@ -116,13 +146,11 @@ app.post("/topologias", async (req, res) => {
     await nuevaTopologia.save();
     res.status(201).json({ message: "Topología creada con éxito!" });
   } catch (error) {
-    console.error("Error al crear la topología:", error);
-    res.status(500).json({
-      error:
-        "Error al crear la topología,Por favor, completa todos los campos requeridos",
-    });
+    console.error("Error al crear la topologia:", error);
+    res.status(500).json({ error: "Topología ya existente en la base de datos" });
   }
 });
+
 
 app.put("/topologias/:id", async (req, res) => {
   const { id } = req.params;
@@ -154,6 +182,39 @@ app.put("/topologias/:id", async (req, res) => {
   } = req.body;
 
   try {
+    // Verifica si ya existe otro documento con estos campos y un id diferente
+    const existeTopologia = await Topologia.findOne({
+      _id: { $ne: id }, // Excluye el documento actual
+      IpEquipoDestino,
+      EquipoDestino,
+      UbicacionEquipoDestino,
+      TrunkDest,
+      Tecnologia,
+      TrkRx1,
+      EquipoTx1,
+      TrkTx1,
+      TrkRx2,
+      EquipoTx2,
+      TrkTx2,
+      TrkRx3,
+      EquipoTx3,
+      TrkTx3,
+      TrkRx4,
+      EquipoTx4,
+      TrkTx4,
+      TrkRx5,
+      EquipoTx5,
+      TrkTx5,
+      TrkROU,
+      EquipoROU,
+      UbicacionEquipoROU,
+      IpEquipoROU,
+    });
+
+    if (existeTopologia) {
+      return res.status(409).json({ error: "Ya existe otra topología con estos mismos valores." });
+    }
+
     const updatedNode = await Topologia.findByIdAndUpdate(
       id,
       {
@@ -182,7 +243,7 @@ app.put("/topologias/:id", async (req, res) => {
         UbicacionEquipoROU,
         IpEquipoROU,
       },
-      { new: true } // Para devolver el documento actualizado
+      { new: true, runValidators: true }
     );
 
     if (!updatedNode) {
@@ -263,7 +324,7 @@ app.post("/usuarios/nuevo", async (req, res) => {
       NombreUsuario,
       usser,
       Rol,
-      Password: hashedPassword, // Guardamos la contraseña encriptada
+      Password: hashedPassword, 
     });
 
     // Guarda el usuario en la base de datos
@@ -359,25 +420,22 @@ app.get('/equipos_grafana', (req, res) => {
 
 
 app.get('/equipos_grafana_conjunto', (req, res) => {
-  const { equipo } = req.query;
+  const { query } = req.query;
 
-  if (!equipo) {
-    return res.status(400).json({ error: 'El parámetro "equipo" es obligatorio' });
+  let sqlQuery = 'SELECT * FROM vista_conjunto_datos_cre';
+  if (query) {
+    // Filtra la consulta según el parámetro de búsqueda, ajusta el campo según tus necesidades
+    sqlQuery += ` WHERE cre LIKE '%${query}%'`; 
   }
 
-  db.query(
-    'SELECT * FROM vista_conjunto_datos_cre WHERE cre= ?',
-    
-    [equipo],
-    
-    (error, results) => {
-      if (error) {
-        return res.status(500).json({ error: 'Error en la consulta' });
-      }
-      
-      res.json(results);
+  // Elimina el límite para que la consulta no esté restringida a 10 resultados
+  db.query(sqlQuery, (error, results) => {
+  
+    if (error) {
+      return res.status(500).json({ error: 'Error en la consulta' });
     }
-  );
+    res.json(results);
+  });
 });
 
 app.listen(port, () => {

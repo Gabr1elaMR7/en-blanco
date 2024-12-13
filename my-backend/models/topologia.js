@@ -24,12 +24,22 @@ const topologiaSchema = new mongoose.Schema(
     TrkRx5: { type: String, required: false },
     EquipoTx5: { type: String, required: false },
     TrkTx5: { type: String, required: false },
+    TrkRx6: { type: String, required: false },
+    EquipoTx6: { type: String, required: false },
+    TrkTx6: { type: String, required: false },
+    TrkRx7: { type: String, required: false },
+    EquipoTx7: { type: String, required: false },
+    TrkTx7: { type: String, required: false },
+    TrkRx8: { type: String, required: false },
+    EquipoTx8: { type: String, required: false },
+    TrkTx8: { type: String, required: false },
     TrkROU: { type: String, required: true },
     EquipoROU: { type: String, required: true },
     UbicacionEquipoROU: { type: String, required: false },
     IpEquipoROU: { type: String, required: false },
   },
-  { timestamps: true });
+  { timestamps: true }
+);
 // Método para convertir el documento a JSON
 topologiaSchema.methods.toJSON = function () {
   const { __v, ...data } = this.toObject();

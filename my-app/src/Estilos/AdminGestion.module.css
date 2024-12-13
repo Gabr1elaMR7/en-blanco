@@ -93,6 +93,11 @@
     width: 25%;
 }
 
+.dashboardContainer{
+    margin: 40px;
+    padding-top: 10px;
+}
+
 @media (max-width: 768px){
     .botonUsuario,.botonJson{
         font-size: 10px;

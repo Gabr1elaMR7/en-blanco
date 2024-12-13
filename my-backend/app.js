@@ -72,6 +72,15 @@ app.post("/topologias", async (req, res) => {
     TrkRx5,
     EquipoTx5,
     TrkTx5,
+    TrkRx6,
+    EquipoTx6,
+    TrkTx6,
+    TrkRx7,
+    EquipoTx7,
+    TrkTx7,
+    TrkRx8,
+    EquipoTx8,
+    TrkTx8,
     TrkROU,
     EquipoROU,
     UbicacionEquipoROU,
@@ -106,6 +115,15 @@ app.post("/topologias", async (req, res) => {
       TrkRx5,
       EquipoTx5,
       TrkTx5,
+      TrkRx6,
+      EquipoTx6,
+      TrkTx6,
+      TrkRx7,
+      EquipoTx7,
+      TrkTx7,
+      TrkRx8,
+      EquipoTx8,
+      TrkTx8,
       TrkROU,
       EquipoROU,
       UbicacionEquipoROU,
@@ -137,6 +155,15 @@ app.post("/topologias", async (req, res) => {
       TrkRx5,
       EquipoTx5,
       TrkTx5,
+      TrkRx6,
+      EquipoTx6,
+      TrkTx6,
+      TrkRx7,
+      EquipoTx7,
+      TrkTx7,
+      TrkRx8,
+      EquipoTx8,
+      TrkTx8,
       TrkROU,
       EquipoROU,
       UbicacionEquipoROU,
@@ -175,6 +202,15 @@ app.put("/topologias/:id", async (req, res) => {
     TrkRx5,
     EquipoTx5,
     TrkTx5,
+    TrkRx6,
+    EquipoTx6,
+    TrkTx6,
+    TrkRx7,
+    EquipoTx7,
+    TrkTx7,
+    TrkRx8,
+    EquipoTx8,
+    TrkTx8,
     TrkROU,
     EquipoROU,
     UbicacionEquipoROU,
@@ -205,6 +241,15 @@ app.put("/topologias/:id", async (req, res) => {
       TrkRx5,
       EquipoTx5,
       TrkTx5,
+      TrkRx6,
+      EquipoTx6,
+      TrkTx6,
+      TrkRx7,
+      EquipoTx7,
+      TrkTx7,
+      TrkRx8,
+      EquipoTx8,
+      TrkTx8,
       TrkROU,
       EquipoROU,
       UbicacionEquipoROU,
@@ -238,6 +283,15 @@ app.put("/topologias/:id", async (req, res) => {
         TrkRx5,
         EquipoTx5,
         TrkTx5,
+        TrkRx6,
+        EquipoTx6,
+        TrkTx6,
+        TrkRx7,
+        EquipoTx7,
+        TrkTx7,
+        TrkRx8,
+        EquipoTx8,
+        TrkTx8,
         TrkROU,
         EquipoROU,
         UbicacionEquipoROU,
@@ -394,28 +448,6 @@ app.get('/datos_cre_daas', (req, res) => {
     }
     res.json(results);
   });
-});
-
-app.get('/equipos_grafana', (req, res) => {
-  const { equipo } = req.query;
-
-  if (!equipo) {
-    return res.status(400).json({ error: 'El parámetro "equipo" es obligatorio' });
-  }
-
-  db.query(
-    'SELECT * FROM equipos_grafana WHERE equipo = ?',
-    
-    [equipo],
-    
-    (error, results) => {
-      if (error) {
-        return res.status(500).json({ error: 'Error en la consulta' });
-      }
-      console.log("grafana resultados",results);
-      res.json(results);
-    }
-  );
 });
 
 

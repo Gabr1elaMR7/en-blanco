@@ -29,19 +29,6 @@ function query(sql, params) {
     });
 }
 
-// Ejemplo de uso de la función query
-async function exampleUsage() {
-    try {
-        const results = await query('SELECT * FROM equipos_grafana'); 
-        console.log('Resultados de la consulta:', results);
-    } catch (error) {
-        console.error('Error ejecutando la consulta:', error);
-    }
-}
-
-// Llamada a la función de ejemplo para probar la conexión
-exampleUsage();
-
 // Exportar el pool y la función query para uso en otros módulos
 module.exports = { pool, query };
 

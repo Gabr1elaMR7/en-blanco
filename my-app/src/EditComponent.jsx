@@ -7,9 +7,17 @@ const EditComponent = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [searchTechnology, setSearchTechnology] = useState("FTTO");
   const [editingData, setEditingData] = useState([]);
+  const [showInputDiv, setShowInputDiv] = useState(false);
+  const [showAdditionalFields, setShowAdditionalFields] = useState(false);
 
   const [topologiaCreada, setTopologiaCreada] = useState(false); // Nuevo estado para el mensaje
 
+  const handleToggleAdditionalFields = () => {
+    setShowAdditionalFields((prev) => !prev);
+  };
+  const handleShowInputDiv = () => {
+    setShowInputDiv((prevShow) => !prevShow);
+  };
   const handleSearch = async () => {
     try {
       const response = await axios.get("http://172.31.33.33:5000/topologias", {
@@ -61,6 +69,7 @@ const EditComponent = () => {
       item.EquipoDestino,
       item.UbicacionEquipoDestino,
       "", // TrunkDest (empty field)
+
       "", // TrkROU (empty field)
       item.EquipoROU, // EquipoROU (empty field)
       item.UbicacionEquipoROU,
@@ -81,6 +90,12 @@ const EditComponent = () => {
       "", // TrkRx5 (empty field)
       item.EquipoTx5,
       "", // TrkTx5 (empty field)
+      item.EquipoTx6,
+      "",
+      item.EquipoTx7,
+      "",
+      item.EquipoTx8,
+      "",
     ];
 
     return dataToCopy; // Devuelve el texto a copiar
@@ -270,6 +285,9 @@ const EditComponent = () => {
               <option value="FTTH">FTTH</option>
               <option value="CMTS">CMTS</option>
             </select>
+
+            {showAdditionalFields && (
+            <>
 
             <label>IN EQUIPO TX1</label>
             <input
@@ -481,6 +499,134 @@ const EditComponent = () => {
               }}
             />
 
+            <label>IN EQUIPO TX6</label>
+            <input
+              type="text"
+              value={item.TrkRx6 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkRx6: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>EQUIPO TX6</label>
+            <input
+              type="text"
+              value={item.EquipoTx6 || ""}
+              onChange={(e) => {
+                const updated = { ...item, EquipoTx6: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>OUT EQUIPO TX6</label>
+            <input
+              type="text"
+              value={item.TrkTx6 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkTx6: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>IN EQUIPO TX7</label>
+            <input
+              type="text"
+              value={item.TrkRx7 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkRx7: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>EQUIPO TX7</label>
+            <input
+              type="text"
+              value={item.EquipoTx7 || ""}
+              onChange={(e) => {
+                const updated = { ...item, EquipoTx7: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>OUT EQUIPO TX7</label>
+            <input
+              type="text"
+              value={item.TrkTx7 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkTx7: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>IN EQUIPO TX8</label>
+            <input
+              type="text"
+              value={item.TrkRx8 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkRx8: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>EQUIPO TX8</label>
+            <input
+              type="text"
+              value={item.EquipoTx8 || ""}
+              onChange={(e) => {
+                const updated = { ...item, EquipoTx8: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+
+            <label>OUT EQUIPO TX8</label>
+            <input
+              type="text"
+              value={item.TrkTx8 || ""}
+              onChange={(e) => {
+                const updated = { ...item, TrkTx8: e.target.value };
+                setEditingData((prevData) =>
+                  prevData.map((data) =>
+                    data._id === item._id ? updated : data
+                  )
+                );
+              }}
+            />
+            </>
+             )}
+
             <button
               type="button"
               className={styles.botonguardarEditar}
@@ -506,6 +652,15 @@ const EditComponent = () => {
                   TrkRx5: item.TrkRx5,
                   EquipoTx5: item.EquipoTx5,
                   TrkTx5: item.TrkTx5,
+                  TrkRx6: item.TrkRx6,
+                  EquipoTx6: item.EquipoTx6,
+                  TrkTx6: item.TrkTx6,
+                  TrkRx7: item.TrkRx7,
+                  EquipoTx7: item.EquipoTx7,
+                  TrkTx7: item.TrkTx7,
+                  TrkRx8: item.TrkRx8,
+                  EquipoTx8: item.EquipoTx8,
+                  TrkTx8: item.TrkTx8,
                   TrkROU: item.TrkROU,
                   EquipoROU: item.EquipoROU,
                   UbicacionEquipoROU: item.UbicacionEquipoROU,
@@ -515,6 +670,35 @@ const EditComponent = () => {
             >
               Guardar
             </button>
+            <button
+            type="button"
+            onClick={handleToggleAdditionalFields}
+            className={styles.botonExpandirEdit}
+          >
+            {showAdditionalFields ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-caret-up-fill"
+                viewBox="0 0 16 16"
+              >
+                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+              </svg>
+            ) : (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="currentColor"
+                class="bi bi-caret-down-fill"
+                viewBox="0 0 16 16"
+              >
+                <path d="M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z" />
+              </svg>
+            )}
+          </button>
             {index === editingData.length - 1 && (
               <CopyToClipboard
                 text={handleCopyData(item)}

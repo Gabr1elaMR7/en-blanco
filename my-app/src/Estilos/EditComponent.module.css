@@ -1,6 +1,6 @@
 .contenedorEncabezadoEditar {
   text-align: center;
-  background-color: #020202;
+  background-color: rgb(33, 36, 41);
   border-radius: 10px;
   padding: 10px;
   color: white;
@@ -17,7 +17,7 @@
 .inputBusquedaEditar {
   width: 300px;
   text-align: center;
-  border-radius: 5px;
+  border-radius: 5px; 
   border: 3px solid #1f1f1f;
   height: 30px;
 }
@@ -65,6 +65,7 @@
   width: 50%;
   height: 40px;
   margin-top: 10px;
+  margin-left: 5px;
   background-color: #ff0202;
   border-radius: 10px;
   color: white;
@@ -74,15 +75,29 @@
 }
 
 .botonPortapelesEditar {
-  margin-left: 15px;
+
   height: 40px;
-  background-color: blue;
+  background-color: transparent;
   border-radius: 10px;
-  color: white;
   font-size: medium;
-  border: 1px solid rgb(53, 0, 151);
+  border: none;
 }
 
+.botonExpandirEdit {
+  width: 10%;
+  /* Ocupa todo el ancho disponible */
+  padding: 10px;
+  border-radius: 5px;
+  /* Bordes redondeados */
+  margin-top: 10px;
+  /* Separación del botón del resto del contenido */
+  border: none;
+  /* Sin borde adicional para el botón */
+  cursor: pointer;
+  text-align: center;
+  background-color: transparent !important;
+  margin-bottom: 10px;
+}
 
 .formularioEditar {
   margin-top: 20px;
@@ -96,11 +111,11 @@
 }
 
 .formularioEditar label {
-  width: 140px;
+  width: 25%;
   font-size: 15px;
   height: 45px;
   align-items: center;
-  margin: 5px;
+  margin-right: none;
   font-style: bold;
   font-weight: bold;
 }
@@ -108,7 +123,7 @@
 .formularioEditar input {
   border: 1px solid #1f1f1f;
   border-radius: 3px;
-  width: 35%;
+  width: 25%;
   font-size: small;
   text-align: center;
   height: 50px;
@@ -119,11 +134,10 @@
   border-top: 10px;
   border: 1px solid #1f1f1f;
   border-radius: 3px;
-  width: 35%;
+  width: 25%;
   font-size: medium;
   text-align: center;
   height: 45px;
-  margin: 5px;
 }
 
 
@@ -204,7 +218,7 @@
   }
 }
 
-@media(max-width:1500px){
+@media(max-width:1500px) {
   .contenedorEncabezadoEditar {
     padding: 15px;
   }

@@ -7,16 +7,51 @@ export const crearMatriz = (topologias = []) => {
 
     // Definir el orden de los campos que quieres tomar en cuenta
     const ordenCampos = [
-      "IpEquipoDestino", "EquipoDestino", "UbicacionEquipoDestino", "TrunkDest", "Tecnologia", 
-      "TrkRx1", "EquipoTx1", "TrkTx1", "TrkRx2", "EquipoTx2", "TrkTx2", "TrkRx3", 
-      "EquipoTx3", "TrkTx3", "TrkRx4", "EquipoTx4", "TrkTx4", "TrkRx5", 
-      "EquipoTx5", "TrkTx5", "TrkROU", "EquipoROU", "UbicacionEquipoROU", "IpEquipoROU"
+      "IpEquipoDestino",
+      "EquipoDestino",
+      "UbicacionEquipoDestino",
+      "TrunkDest",
+      "Tecnologia",
+      "TrkRx1",
+      "EquipoTx1",
+      "TrkTx1",
+      "TrkRx2",
+      "EquipoTx2",
+      "TrkTx2",
+      "TrkRx3",
+      "EquipoTx3",
+      "TrkTx3",
+      "TrkRx4",
+      "EquipoTx4",
+      "TrkTx4",
+      "TrkRx5",
+      "EquipoTx5",
+      "TrkTx5",
+      "TrkRx6",
+      "EquipoTx6",
+      "TrkTx6",
+      "TrkRx7",
+      "EquipoTx7",
+      "TrkTx7",
+      "TrkRx8",
+      "EquipoTx8",
+      "TrkTx8",
+      "TrkROU",
+      "EquipoROU",
+      "UbicacionEquipoROU",
+      "IpEquipoROU",
     ];
 
     // Excepciones: campos que no deben ser tomados en cuenta
     const excepciones = [
-      "_id", "IpEquipoDestino", "UbicacionEquipoDestino", "UbicacionEquipoROU", 
-      "IpEquipoROU", "Tecnologia", "createdAt", "updatedAt"
+      "_id",
+      "IpEquipoDestino",
+      "UbicacionEquipoDestino",
+      "UbicacionEquipoROU",
+      "IpEquipoROU",
+      "Tecnologia",
+      "createdAt",
+      "updatedAt",
     ];
 
     topologias.forEach((topologia) => {
@@ -28,7 +63,11 @@ export const crearMatriz = (topologias = []) => {
         const valor = topologia[campo];
 
         // Si el campo no está en excepciones y tiene un valor, lo agregamos
-        if (!excepciones.includes(campo) && valor !== undefined && valor !== "") {
+        if (
+          !excepciones.includes(campo) &&
+          valor !== undefined &&
+          valor !== ""
+        ) {
           valores.push(valor);
         }
       });
@@ -51,7 +90,7 @@ export const crearMatriz = (topologias = []) => {
       }
     });
 
-   return matriz;
+    return matriz;
   }
 
   return topologias;

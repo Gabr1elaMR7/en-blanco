@@ -54,7 +54,7 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
   };
 
   const obtenerImagen = (equipo) => {
-    if (equipo.includes("ZAC.")) {
+    if (equipo.includes("ZAC-")) {
       return "/imagenes/zte.png";
     } else if (equipo.includes("HAC")) {
       return "/imagenes/huawei.png";

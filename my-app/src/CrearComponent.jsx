@@ -30,6 +30,9 @@ function CrearComponent() {
   const [trkRx5, setTrkRx5] = useState("");
   const [equipoTx5, setEquipoTx5] = useState("");
   const [trkTx5, setTrkTx5] = useState("");
+  const [trkRx6, setTrkRx6] = useState("");
+  const [equipoTx6, setEquipoTx6] = useState("");
+  const [trkTx6, setTrkTx6] = useState("");
   const [clipboardContent, setClipboardContent] = useState(""); // Estado para almacenar el contenido del portapapeles
   const [inputText, setInputText] = useState("");
   const [showInputDiv, setShowInputDiv] = useState(false);
@@ -70,6 +73,9 @@ function CrearComponent() {
         setTrkRx5(values[21] || "");
         setEquipoTx5(values[22] || "");
         setTrkTx5(values[23] || "");
+        setTrkRx6(values[24] || "");
+        setEquipoTx6(values[25] || "");
+        setTrkTx6(values[26] || "");
 
         alert("Datos asignados correctamente.");
       } else {
@@ -128,22 +134,29 @@ function CrearComponent() {
     addIfNotEmpty("TrkRx5", trkRx5);
     addIfNotEmpty("EquipoTx5", equipoTx5);
     addIfNotEmpty("TrkTx5", trkTx5);
+    addIfNotEmpty("TrkRx6", trkRx6);
+    addIfNotEmpty("EquipoTx6", equipoTx6);
+    addIfNotEmpty("TrkTx6", trkTx6);
 
     try {
       // Verifica si ya existe una topología similar en la base de datos
-      const existingResponse = await axios.get("http://172.31.33.33:5000/topologias", {
-        params: newTopologia,
-      });
-    
+      const existingResponse = await axios.get(
+        "http://172.31.33.33:5000/topologias",
+        {
+          params: newTopologia,
+        }
+      );
+
       if (existingResponse.data && existingResponse.data.length > 0) {
-        alert("Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos.");
+        alert(
+          "Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos."
+        );
         return;
       }
-    
+
       // Si no existe, crea la nueva topología
       await axios.post("http://172.31.33.33:5000/topologias", newTopologia);
       alert("¡Topología creada con éxito!");
-    
     } catch (error) {
       console.error("Error al crear la topología:", error);
 
@@ -153,16 +166,17 @@ function CrearComponent() {
         // Error genérico
         alert("Error al crear la topología. Intente nuevamente.");
       }
-    
+
       // Manejar un error específico de "conflicto" (por ejemplo, código 409)
       if (error.response && error.response.status === 409) {
-        alert("Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos.");
+        alert(
+          "Una topología con estos datos ya existe en la base de datos. Por favor, verifique los campos."
+        );
       } else {
         // Error genérico
         alert("Error al crear la topología. Intente nuevamente.");
       }
     }
-    
   };
 
   return (
@@ -190,9 +204,9 @@ function CrearComponent() {
           {showInputDiv && ( // Condicional para mostrar el div solo si showInputDiv es true
             <div>
               <label htmlFor="inputText">
-                Ingrese los datos (separados por comas) y presione Enter: 
+                Ingrese los datos (separados por comas) y presione Enter:
               </label>
-              
+
               <input
                 type="text"
                 id="inputText"
@@ -206,7 +220,6 @@ function CrearComponent() {
       </div>
       <div>
         <form className={styles.crearFormulario} onSubmit={handleSubmit}>
-          
           <div>
             <label htmlFor="ipEquipoDestino">IP OLT/CMTS</label>
             <input
@@ -293,7 +306,7 @@ function CrearComponent() {
               <option value="FTTO">FTTO</option>
             </select>
           </div>
-         
+
           {/* Nuevos campos opcionales visibles solo si `showAdditionalFields` es true */}
           {showAdditionalFields && (
             <>
@@ -430,6 +443,34 @@ function CrearComponent() {
                   id="trkTx5"
                   value={trkTx5}
                   onChange={(e) => setTrkTx5(e.target.value)}
+                />
+              </div>
+
+              <div>
+                <label htmlFor="trkRx6">IN EQUIPO TX6</label>
+                <input
+                  type="text"
+                  id="trkRx6"
+                  value={trkRx6}
+                  onChange={(e) => setTrkRx6(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="equipoTx6">EQUIPO TX6</label>
+                <input
+                  type="text"
+                  id="equipoTx6"
+                  value={equipoTx6}
+                  onChange={(e) => setEquipoTx6(e.target.value)}
+                />
+              </div>
+              <div>
+                <label htmlFor="trkTx6">OUT EQUIPO TX6</label>
+                <input
+                  type="text"
+                  id="trkTx6"
+                  value={trkTx6}
+                  onChange={(e) => setTrkTx6(e.target.value)}
                 />
               </div>
             </>

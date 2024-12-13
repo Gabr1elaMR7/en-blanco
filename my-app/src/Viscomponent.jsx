@@ -40,7 +40,7 @@ export const Viscomponent = ({ query, tecnologia }) => {
           forceAtlas2Based: {
             gravitationalConstant: -400, // Ajusta la intensidad de repulsión
             centralGravity: 0.005,
-            springLength: 100, // Distancia preferida entre los nodos conectados
+            springLength: 150, // Distancia preferida entre los nodos conectados
             springConstant: 0.08,
           },
           maxVelocity: 50,
@@ -58,14 +58,15 @@ export const Viscomponent = ({ query, tecnologia }) => {
           shape: "dot",
           color: {
             border: "#0d1b2a",
-            background: "#c1121f",  
+            background: "black",  
           },
           font: {
-            size: 10,
-            color: "c1121f",
-
+            size: 15,
+            color: "black",  
+            background: "#f9f9f9", 
           },
         },
+        
         edges: {
           arrows: {
             to: {
@@ -76,8 +77,10 @@ export const Viscomponent = ({ query, tecnologia }) => {
           },
           font: {
             size: 10,
-            color: "#c1121f",
+            color: "black",
+            background: "#f9f9f9",
           },
+          size: 40,
         },
       };
       
@@ -151,23 +154,43 @@ export const Viscomponent = ({ query, tecnologia }) => {
       });
 
       // Especifica una distancia que quieres aplicar entre nodos
-      const distanceBetweenNodes = 180; // Cambia este valor según tu necesidad
+      const distanceBetweenNodes = totalLinkLength; 
       const nodeSpacing = nodes.length * distanceBetweenNodes;
 
+
+      const nodeSpacingSpecial = 350;
+      const specialNodes = nodes.filter((node) =>
+        ["A9K", "NGW", "BNG", "THBH"].some((keyword) =>
+          node.label.toUpperCase().includes(keyword)
+        )
+      );
+    
+      var columnX=100;
+      
       // Reposiciona los nodos
-      nodes = nodes.map((node) => {
-        if (node.id === firstNodeId) {
-          return { ...node, fixed: true, x: 0, y: 0,size: 30 };
+      nodes = nodes.map((node) => { 
+        if (specialNodes.includes(node)) {
+          const positionInColumn = specialNodes.indexOf(node);
+          return {
+            ...node,
+            fixed: true,
+            x: columnX,
+            y: positionInColumn * nodeSpacingSpecial,
+            size: 40,
+          };
         }
-        if (node.id === lastNodeId && node.fixed) { // Solo si el nodo es fijo
-          return { ...node, x: nodeSpacing, y: 0,size: 30 };
+        if (node.id === firstNodeId) {
+          return { ...node, fixed: true, x: -nodeSpacing, y: 0, size: 40 };
+        }
+        if (node.id === lastNodeId && node.fixed) {
+          return { ...node, x: nodeSpacing, y: 0, size: 40 };
         }
         return node;
       });
       
 
       var minRoundness = 0.1; // Valor mínimo de roundness
-      var maxRoundness = 0.8; // Valor máximo de roundness
+      var maxRoundness = 0.5; // Valor máximo de roundness
 
       var edges = matrizDataVis
         .map((row, index) => {
@@ -190,9 +213,9 @@ export const Viscomponent = ({ query, tecnologia }) => {
               label: path,
               font: {
                 align: "bottom",
-                color: "#6a040f",
+                color: "black",
                 size: 10,
-                strokeColor: "#e0e1dd",
+                strokeColor: "white",
               },
               smooth: {
                 type: "curvedCW",

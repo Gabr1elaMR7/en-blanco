@@ -241,7 +241,7 @@ const AdminComponent = () => {
             ))}
           </tbody>
         </table>
-      </section>
+      </section>  
     </div>
   );
 };

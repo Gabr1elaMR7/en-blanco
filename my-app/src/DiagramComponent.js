@@ -209,7 +209,8 @@ const DiagramComponent = ({ consulta, tecnologia }) => {
         width: "100%",
         height: "400px",
         backgroundColor: "#383838",
-        borderRadius: "15px", // Aquí redondeas las esquinas
+        borderRadius: "5px",
+        marginTop: "10px", // Aquí redondeas las esquinas
       }}
     />
   );

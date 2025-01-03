@@ -273,7 +273,6 @@ export const Viscomponent = ({ query, tecnologia }) => {
       id="network"
       style={{
         width: "100%",
-        minHeight: "400px",
         border: "1px solid lightgray", // Borde gris suave
         borderRadius: "10px", // Opcional, redondear las esquinas
         marginTop: "20px",

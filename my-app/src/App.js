@@ -42,6 +42,24 @@ const App = () => {
       setIsAuthenticated(true);
       setUserRole(storedRole);
     }
+    const handleActivity = () => {
+        clearTimeout(window.logoutTimer);
+        window.logoutTimer = setTimeout(() => {
+          handleLogout();
+        }, 30 * 60 * 1000); // 30 minutos
+      };
+
+    window.addEventListener("mousemove", handleActivity);
+    window.addEventListener("keydown", handleActivity);
+    window.addEventListener("click", handleActivity);
+
+    handleActivity(); // Inicializar el temporizador al cargar
+
+    return () => {
+      window.removeEventListener("mousemove", handleActivity);
+      window.removeEventListener("keydown", handleActivity);
+      window.removeEventListener("click", handleActivity);
+    };
   }, []);
 
   const handleLogin = (rol) => {

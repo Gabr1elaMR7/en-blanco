@@ -93,10 +93,25 @@
     width: 25%;
 }
 
+
 .dashboardContainer{
     margin: 40px;
     padding-top: 10px;
 }
+
+.dashboardContainer h2{
+    font-size: medium;
+    color: aliceblue;
+}
+
+.contentContainer h1{
+    margin: 5px;
+}
+
+/* .contentContainer{
+    width: 100%;
+    height: 100%;
+} */
 
 @media (max-width: 768px){
     .botonUsuario,.botonJson{
@@ -104,6 +119,5 @@
     }
     .tituloAdmin{
         height: auto;
-        font-size: 14px;
     }
 }
